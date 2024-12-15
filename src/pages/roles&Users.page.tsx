@@ -1,7 +1,8 @@
+import UserTable from "@/components/user/userList.component"
 
 const RolesAndUsers = () => {
   return (
-    <div>roles&Users.page</div>
+    <UserTable/>
   )
 }
 
