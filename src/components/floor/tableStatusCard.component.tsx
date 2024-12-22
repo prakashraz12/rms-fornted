@@ -18,12 +18,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { QrCode } from "lucide-react";
-
-interface TableStatusCardProps {
-  tableNumber: number;
-  status: "Available" | "Reserved" | "Occupied";
-  seats: number;
-}
+import { TableStatusCardProps } from "./types/floor.types";
 
 export function TableStatusCard({
   tableNumber,
@@ -66,11 +61,8 @@ export function TableStatusCard({
         <p className="text-sm text-gray-500 dark:text-white">Seats: {seats}</p>
       </CardContent>
       <CardFooter className="flex flex-col justify-between gap-3">
-        <div className="flex  gap-2">
-          <Dialog
-            open={isBookingDialogOpen}
-            onOpenChange={setIsBookingDialogOpen}
-          >
+        <div className="flex gap-2">
+          <Dialog open={isBookingDialogOpen} onOpenChange={setIsBookingDialogOpen}>
             <DialogTrigger asChild>
               <Button
                 disabled={status !== "Available"}
@@ -85,9 +77,7 @@ export function TableStatusCard({
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Name
-                  </Label>
+                  <Label htmlFor="name" className="text-right">Name</Label>
                   <Input
                     id="name"
                     value={bookingName}
@@ -99,27 +89,26 @@ export function TableStatusCard({
               <Button onClick={handleBook}>Confirm Booking</Button>
             </DialogContent>
           </Dialog>
-
+          
           <Dialog open={isQRDialogOpen} onOpenChange={setIsQRDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline">
-                <QrCode className="mr-2 h-4 w-4" />
-                Generate QR
+                <QrCode className="h-4 w-4" />
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Table {tableNumber} QR Code</DialogTitle>
               </DialogHeader>
-              <div className="flex justify-center py-4">
-                {/* <QRCode value={`Table ${tableNumber} - Seats: ${seats}`} size={200} /> */}
+              <div className="flex justify-center p-4">
+                {/* Add QR code component here */}
+                <div className="w-48 h-48 bg-gray-200 flex items-center justify-center">
+                  QR Code Placeholder
+                </div>
               </div>
             </DialogContent>
           </Dialog>
         </div>
-        <Button className="w-full" variant={"outline"}>
-          Create Order
-        </Button>
       </CardFooter>
     </Card>
   );

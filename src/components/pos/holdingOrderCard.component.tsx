@@ -1,8 +1,5 @@
-
 const HoldingOrderCard = () => {
-  return (
-    <div>HoldingOrderCard</div>
-  )
-}
+  return <div>HoldingOrderCard</div>;
+};
 
-export default HoldingOrderCard
+export default HoldingOrderCard;

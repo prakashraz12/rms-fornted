@@ -11,7 +11,7 @@ const PosActionBottomContainer = () => {
         Hold Order <Pause />
       </Button>
       <Button className="w-full bg-green-500 h-16 rounded-none border-none hover:bg-green-600 outline-none">
-        Place Order <HandPlatter/>
+        Place Order <HandPlatter />
       </Button>
     </div>
   );

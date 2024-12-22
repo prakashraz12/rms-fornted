@@ -7,6 +7,7 @@ import {
   Users,
 } from "lucide-react";
 import logo from "./assets/icons/logo.png";
+import noImage from "./assets/icons/no-image.png";
 
 //main color
 export const MAIN_COLOR = "#50C67C";
@@ -37,6 +38,8 @@ export const EXPANDED_WIDTH = 64;
 //logo image
 export const LOGO_IMAGE = logo;
 export const COMPANY_NAME = "ForkFlow";
+
+export const NO_IMAGE = noImage;
 
 //user types
 export const USER_TYPES = [

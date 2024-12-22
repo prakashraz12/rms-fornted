@@ -11,7 +11,7 @@ const HeaderProvider = ({
   title,
   buttonName,
   actionButton,
-  onClick
+  onClick,
 }: HeaderProviderProps) => {
   return (
     <div className="w-full flex justify-between ">

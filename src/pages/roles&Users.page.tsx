@@ -1,9 +1,7 @@
-import UserTable from "@/components/user/userList.component"
+import UserTable from "@/components/user/userList.component";
 
 const RolesAndUsers = () => {
-  return (
-    <UserTable/>
-  )
-}
+  return <UserTable />;
+};
 
-export default RolesAndUsers
+export default RolesAndUsers;

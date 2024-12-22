@@ -44,14 +44,14 @@ const initialTables: Table[] = [
   { id: "t8", number: 2, status: "occupied", seats: 2, shape: "circle" },
   { id: "t9", number: 9, status: "available", seats: 6, shape: "rectangle" },
   {
-      id: "t10",
-      number: 10,
-      status: "soon",
-      seats: 4,
-      shape: "circle",
-      timeLeft: "10m 15s",
-    },
-    { id: "t", number: 8, status: "occupied", seats: 2, shape: "circle" },
+    id: "t10",
+    number: 10,
+    status: "soon",
+    seats: 4,
+    shape: "circle",
+    timeLeft: "10m 15s",
+  },
+  { id: "t", number: 8, status: "occupied", seats: 2, shape: "circle" },
 ];
 
 export function FloorTableLayout() {
@@ -71,7 +71,6 @@ export function FloorTableLayout() {
         return "bg-gray-100 text-gray-800";
     }
   };
-
 
   const getTableShape = (shape: Table["shape"], status: Table["status"]) => {
     const baseClasses = cn(

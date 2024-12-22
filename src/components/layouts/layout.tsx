@@ -10,7 +10,7 @@ export const MainLayout = () => {
     setCollapsed(!collapsed);
   };
   return (
-    <main className="w-full h-screen flex flex-col overflow-hidden">
+    <main className="w-full h-screen flex flex-col overflow-scroll">
       <HeaderLayout />
       <div className="flex w-full gap-2 ">
         <SidebarLayout collapsed={collapsed} setCollapsed={handleCollapsed} />

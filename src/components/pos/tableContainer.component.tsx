@@ -14,29 +14,32 @@ import {
 } from "../ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-
-interface TableContainerProps{
-  setIsOpenProductContainerForSmallScreen:(type:boolean)=>void;
-
+interface TableContainerProps {
+  setIsOpenProductContainerForSmallScreen: (type: boolean) => void;
 }
 
-const TableContainer = ({setIsOpenProductContainerForSmallScreen}:TableContainerProps) => {
-
+const TableContainer = ({
+  setIsOpenProductContainerForSmallScreen,
+}: TableContainerProps) => {
   const handleScale = () => {
     console.log("Scale");
   };
 
-  const handleProductContainerOpenForSmallScreen = ()=>{
+  const handleProductContainerOpenForSmallScreen = () => {
     setIsOpenProductContainerForSmallScreen(true);
-  }
-  
+  };
+
   return (
     <div className="w-full h-screen ">
       {/* header */}
       <div className="w-full h-16 flex items-center border-b border-gray-200 ">
         <div className="flex justify-between items-center w-full px-2 md:px-1 lg:px-5">
           <div className="flex items-center space-x-2">
-          <Button size="icon" className="h-10 w-10 bg-primary rounded-xl md:hidden" onClick={handleProductContainerOpenForSmallScreen}>
+            <Button
+              size="icon"
+              className="h-10 w-10 bg-primary rounded-xl md:hidden"
+              onClick={handleProductContainerOpenForSmallScreen}
+            >
               <Menu className="h-4 w-4" />
               <span className="sr-only">Scale</span>
             </Button>
@@ -45,13 +48,18 @@ const TableContainer = ({setIsOpenProductContainerForSmallScreen}:TableContainer
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="hidden md:block">
-              <h1 className="text-sm font-semibold">Prakash Raz Shrestha, POS User</h1>
+              <h1 className="text-sm font-semibold">
+                Prakash Raz Shrestha, POS User
+              </h1>
               <p className="text-xs">rzprakash16@gmail.com</p>
-             
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Button size="icon" className="h-10 w-10 bg-purple-500 rounded-xl" onClick={handleScale}>
+            <Button
+              size="icon"
+              className="h-10 w-10 bg-purple-500 rounded-xl"
+              onClick={handleScale}
+            >
               <Maximize className="h-4 w-4" />
               <span className="sr-only">Scale</span>
             </Button>
@@ -96,7 +104,7 @@ const TableContainer = ({setIsOpenProductContainerForSmallScreen}:TableContainer
                 <TableCell className="text-right">${200}</TableCell>
                 <TableCell></TableCell>
               </TableRow>
-             
+
               <TableRow>
                 <TableCell colSpan={2} className="font-bold">
                   Total

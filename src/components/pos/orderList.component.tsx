@@ -31,7 +31,7 @@ export default function OrderTable() {
     { id: "7", name: "Egg Tart", quantity: 1, price: 3.25 },
     { id: "8", name: "Grains Pan Bread", quantity: 1, price: 4.5 },
     { id: "9", name: "Cheesy Sourdough", quantity: 1, price: 4.5 },
-    { id: "10", name: "Cheesy Sourdough", quantity: 1, price: 4.5 }
+    { id: "10", name: "Cheesy Sourdough", quantity: 1, price: 4.5 },
   ]);
 
   const updateQuantity = (id: string, increment: boolean) => {
@@ -77,7 +77,9 @@ export default function OrderTable() {
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
-                    <span className="w-8 text-center font-bold">{item.quantity}</span>
+                    <span className="w-8 text-center font-bold">
+                      {item.quantity}
+                    </span>
                     <Button
                       variant="outline"
                       size="icon"

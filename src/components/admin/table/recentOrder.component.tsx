@@ -17,12 +17,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, ArrowUpDown, FilterIcon } from "lucide-react";
+import { MoreHorizontal, FilterIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import BorderRadiusWrapper from "@/components/common/borderRadiusWrapper.component";
 import {
   Select,
-  SelectValue,
   SelectTrigger,
   SelectItem,
   SelectContent,
@@ -87,8 +86,8 @@ const RecentOrdersTable: React.FC = () => {
         <div className="w-auto">
           <Select>
             <SelectTrigger>
-                          <FilterIcon className="w-4 h-4" />
-                          <p>Filter</p>
+              <FilterIcon className="w-4 h-4" />
+              <p>Filter</p>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="completed">Completed</SelectItem>

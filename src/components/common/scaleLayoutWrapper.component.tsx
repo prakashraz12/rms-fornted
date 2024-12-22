@@ -1,11 +1,11 @@
-import React from "react"
+import React from "react";
 
-const ScaleWrapper = ({children}:{children:React.ReactNode}) => {
+const ScaleWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="mt-2  w-full h-full md:px-4 px-1 overflow-x-hidden">
-        {children}
+      {children}
     </div>
-  )
-}
+  );
+};
 
-export default ScaleWrapper
+export default ScaleWrapper;
