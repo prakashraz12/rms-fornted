@@ -13,7 +13,6 @@ import { useImageUpload } from "./hooks/useImageUpload";
 import { UploadPlaceholder } from "./components/UploadPlaceholder";
 import useDeleteImage from "./hooks/useDeleteImage";
 
-
 export const ImageUploader: React.FC<ImageUploaderProps> = ({
   maxSizeInMB = 5,
   image,
@@ -28,16 +27,17 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     handleFileChange,
     handleDrop,
     handleUpload,
-    handleRemove
+    handleRemove,
   } = useImageUpload({
     maxSizeInMB,
     allowedTypes,
-    setImage
+    setImage,
   });
 
-
-  const { handleDeleteImage, isLoading: deleteLoading } = useDeleteImage(image?.publicId, setImage);
-
+  const { handleDeleteImage, isLoading: deleteLoading } = useDeleteImage(
+    image?.publicId,
+    setImage
+  );
 
   return (
     <Card className="max-w-sm shadow-none border-none">
@@ -84,14 +84,19 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       </CardContent>
       <CardFooter className="flex justify-end mt-2">
         {image ? (
-          <Button disabled={deleteLoading} onClick={handleDeleteImage} variant="destructive">
-            {deleteLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Delete"}
+          <Button
+            disabled={deleteLoading}
+            onClick={handleDeleteImage}
+            variant="destructive"
+          >
+            {deleteLoading ? (
+              <Loader2 className="w-6 h-6 animate-spin" />
+            ) : (
+              "Delete"
+            )}
           </Button>
         ) : (
-          <Button
-            onClick={handleUpload}
-            disabled={!selectedFile || isLoading}
-          >
+          <Button onClick={handleUpload} disabled={!selectedFile || isLoading}>
             {isLoading ? (
               <Loader2 className="w-6 h-6 animate-spin" />
             ) : (

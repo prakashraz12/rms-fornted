@@ -22,7 +22,9 @@ export const productApi = baseApiSlice.injectEndpoints({
         console.log(search);
         return {
           url: `/product/all?page=${page}&limit=${limit}${
-            search && search.trim().length > 0 ? `&search=${encodeURIComponent(search)}` : ""
+            search && search.trim().length > 0
+              ? `&search=${encodeURIComponent(search)}`
+              : ""
           }`,
           method: "GET",
         };

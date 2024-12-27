@@ -15,7 +15,7 @@ const DashBoard = () => {
           title="Total Sales"
           value={1000}
           previousValue={900}
-          currency="$"
+          currency="RS"
           progressColor="green"
         />
         <AnalyticsCard

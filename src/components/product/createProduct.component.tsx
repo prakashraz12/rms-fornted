@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,15 +18,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { productCreateSchema } from "@/schema/productCreateSchema";
-import { initialValues } from "./types/product.types";
-import { useProductForm } from "./hooks/useProductForm";
 import useGetCategory from "../category/hooks/useGetCategory";
+import { useProductForm } from "@/hooks/useProductForm";
+import { initialValues } from "@/types/product.type";
 
 export const ProductCreationForm: React.FC = () => {
-
   const { category } = useGetCategory();
 
-  const { selectedProducts, setSelectedProducts, isProductLoading, handleSubmit, image, setImage } = useProductForm();
+  const {
+    selectedProducts,
+    setSelectedProducts,
+    isProductLoading,
+    handleSubmit,
+    image,
+    setImage,
+  } = useProductForm();
 
   return (
     <Card className="w-full container mx-auto mt-6">
@@ -39,7 +45,6 @@ export const ProductCreationForm: React.FC = () => {
           onSubmit={async (values) => {
             handleSubmit(values);
           }}
-
         >
           {({ values, errors, touched, setFieldValue }) => (
             <Form className="space-y-6">

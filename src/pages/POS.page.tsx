@@ -1,7 +1,7 @@
+import { OrderConfirmationPopup } from "@/components/pos/orderConfirmPopup.component";
 import ProductContainer from "@/components/pos/productContainer.component";
 import TableContainer from "@/components/pos/tableContainer.component";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import { X } from "lucide-react";
 import { useState } from "react";
 
 const PosPage = () => {
@@ -9,14 +9,11 @@ const PosPage = () => {
     isOpenProductContainerForSmallScreen,
     setIsOpenProductContainerForSmallScreen,
   ] = useState(false);
+
   return (
     <div className="w-full h-screen overflow-hidden grid grid-cols-12 relative">
       <div className="col-span-12 md:col-span-7 lg:col-span-6 border-r border-gray-200">
-        <TableContainer
-          setIsOpenProductContainerForSmallScreen={
-            setIsOpenProductContainerForSmallScreen
-          }
-        />
+        <TableContainer />
       </div>
       <div className="hidden md:block md:col-span-5 lg:col-span-6">
         <ProductContainer
@@ -66,6 +63,8 @@ const PosPage = () => {
           <X className="h-6 w-6 text-white" />
         </div>
       </div> */}
+
+      <OrderConfirmationPopup />
     </div>
   );
 };

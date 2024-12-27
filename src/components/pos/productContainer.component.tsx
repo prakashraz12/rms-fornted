@@ -14,15 +14,19 @@ interface ProductContainerProps {
 const ProductContainer = ({
   setIsOpenProductContainerForSmallScreen,
 }: ProductContainerProps) => {
-
   const handleCloseProductContainerMenuInMobileScreen = () => {
     setIsOpenProductContainerForSmallScreen(false);
   };
 
   const { handlePosProductRefresh, isFetching, products } = useFetchProduct();
 
-  const { filteredProducts, searchQuery, handleCategoryChange, handleSearch, selectedCategory } = useFilterSearch({ products });
-
+  const {
+    filteredProducts,
+    searchQuery,
+    handleCategoryChange,
+    handleSearch,
+    selectedCategory,
+  } = useFilterSearch({ products });
 
   return (
     <div className="w-full lg:mt-3 md:mt-2  lg:px-4 md:px-2">
@@ -42,21 +46,21 @@ const ProductContainer = ({
             <Search className="absolute left-2.5 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
-
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               placeholder="Search Product"
               className="pl-8 pr-4 h-10 w-full rounded-xl"
             />
           </div>
-          {searchQuery.length > 0 && <Button
-            onClick={() => handleSearch("")}
-            variant={"destructive"}
-            className=" rounded-xl"
-          >
-
-            <span>Clear</span>
-          </Button>}
+          {searchQuery.length > 0 && (
+            <Button
+              onClick={() => handleSearch("")}
+              variant={"destructive"}
+              className=" rounded-xl"
+            >
+              <span>Clear</span>
+            </Button>
+          )}
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -77,7 +81,10 @@ const ProductContainer = ({
         </div>
       </div>
       {/* category swiper */}
-      <CategorySwiper handleCategoryChange={handleCategoryChange} selectedCategory={selectedCategory} />
+      <CategorySwiper
+        handleCategoryChange={handleCategoryChange}
+        selectedCategory={selectedCategory}
+      />
       {/* product list */}
       {isFetching && <p>Loading</p>}
       <div className="lg:mt-6 md:mt-4 mt-2  p-1 h-[90vh] overflow-scroll">

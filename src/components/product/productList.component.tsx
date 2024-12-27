@@ -68,7 +68,6 @@ export default function ProductTable() {
     fetchProducts(1, parseInt(limit), searchQuery);
   };
 
-  
   React.useEffect(() => {
     fetchProducts(page, parseInt(limit));
   }, [page, limit]);

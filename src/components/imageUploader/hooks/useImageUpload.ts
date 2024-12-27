@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useImageUploadMutation } from "@/services/api/file.api";
-import { ImageType } from '../types/imageUploader.types';
+import { ImageType } from "../types/imageUploader.types";
 
 interface UseImageUploadProps {
   maxSizeInMB: number;
@@ -9,8 +9,13 @@ interface UseImageUploadProps {
   setImage: (image: ImageType | null) => void;
 }
 
-export const useImageUpload = ({ maxSizeInMB, allowedTypes, setImage }: UseImageUploadProps) => {
-  const [imageUpload, { isLoading, isError, isSuccess, data: response }] = useImageUploadMutation();
+export const useImageUpload = ({
+  maxSizeInMB,
+  allowedTypes,
+  setImage,
+}: UseImageUploadProps) => {
+  const [imageUpload, { isLoading, isError, isSuccess, data: response }] =
+    useImageUploadMutation();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -88,7 +93,7 @@ export const useImageUpload = ({ maxSizeInMB, allowedTypes, setImage }: UseImage
       toast({
         title: "Error while uploading image",
         description: "Oops! Something went wrong while uploading the image.",
-        variant: "destructive"
+        variant: "destructive",
       });
       handleRemove();
     }
@@ -102,6 +107,6 @@ export const useImageUpload = ({ maxSizeInMB, allowedTypes, setImage }: UseImage
     handleFileChange,
     handleDrop,
     handleUpload,
-    handleRemove
+    handleRemove,
   };
 };

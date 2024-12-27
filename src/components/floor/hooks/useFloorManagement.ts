@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Table, TableStatus, initialTables } from '../types/floor.types';
+import { useState } from "react";
+import { Table, TableStatus, initialTables } from "../types/floor.types";
 import { cn } from "@/lib/utils";
 
 export const useFloorManagement = () => {
@@ -39,8 +39,8 @@ export const useFloorManagement = () => {
   };
 
   const updateTableStatus = (tableId: string, newStatus: TableStatus) => {
-    setTables(prevTables =>
-      prevTables.map(table =>
+    setTables((prevTables) =>
+      prevTables.map((table) =>
         table.id === tableId ? { ...table, status: newStatus } : table
       )
     );
@@ -56,6 +56,6 @@ export const useFloorManagement = () => {
     getStatusColor,
     getTableShape,
     updateTableStatus,
-    bookTable
+    bookTable,
   };
 };

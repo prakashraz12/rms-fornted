@@ -11,10 +11,10 @@ const fileUploadApi = baseApiSlice.injectEndpoints({
     }),
     deleteImage: builder.mutation({
       query: (publicId: string) => ({
-        url:`/file-upload/delete-image?publicId=${publicId}`,
+        url: `/file-upload/delete-image?publicId=${publicId}`,
         method: "DELETE",
-      })
-    })
+      }),
+    }),
   }),
 });
 

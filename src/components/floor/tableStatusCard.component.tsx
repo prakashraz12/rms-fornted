@@ -62,7 +62,10 @@ export function TableStatusCard({
       </CardContent>
       <CardFooter className="flex flex-col justify-between gap-3">
         <div className="flex gap-2">
-          <Dialog open={isBookingDialogOpen} onOpenChange={setIsBookingDialogOpen}>
+          <Dialog
+            open={isBookingDialogOpen}
+            onOpenChange={setIsBookingDialogOpen}
+          >
             <DialogTrigger asChild>
               <Button
                 disabled={status !== "Available"}
@@ -77,7 +80,9 @@ export function TableStatusCard({
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">Name</Label>
+                  <Label htmlFor="name" className="text-right">
+                    Name
+                  </Label>
                   <Input
                     id="name"
                     value={bookingName}
@@ -89,7 +94,7 @@ export function TableStatusCard({
               <Button onClick={handleBook}>Confirm Booking</Button>
             </DialogContent>
           </Dialog>
-          
+
           <Dialog open={isQRDialogOpen} onOpenChange={setIsQRDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline">

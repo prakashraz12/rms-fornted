@@ -1,5 +1,5 @@
-import React from 'react';
-import { Field } from 'formik';
+import React from "react";
+import { Field } from "formik";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,7 +26,7 @@ export const ProductFormFields: React.FC<ProductFormFieldsProps> = ({
   errors,
   touched,
   setFieldValue,
-  category
+  category,
 }) => {
   return (
     <>

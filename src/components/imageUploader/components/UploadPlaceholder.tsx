@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { UploadCloud } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ export const UploadPlaceholder: React.FC<UploadPlaceholderProps> = ({
   fileInputRef,
   handleFileChange,
   allowedTypes,
-  maxSizeInMB
+  maxSizeInMB,
 }) => {
   return (
     <div className="space-y-2 flex flex-col items-center">

@@ -1,11 +1,13 @@
-import React from 'react';
-import { TableStatus } from '../types/floor.types';
+import React from "react";
+import { TableStatus } from "../types/floor.types";
 
 interface StatusLegendProps {
   getStatusColor: (status: TableStatus) => string;
 }
 
-export const StatusLegend: React.FC<StatusLegendProps> = ({ getStatusColor }) => {
+export const StatusLegend: React.FC<StatusLegendProps> = ({
+  getStatusColor,
+}) => {
   return (
     <div className="mb-6 flex flex-wrap items-center justify-center gap-4">
       {["available", "reserved", "occupied", "soon"].map((status) => (

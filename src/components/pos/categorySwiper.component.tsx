@@ -1,19 +1,21 @@
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-import 'swiper/swiper-bundle.css';
-
+import "swiper/swiper-bundle.css";
 
 import useGetCategory from "../category/hooks/useGetCategory";
 
-
-export function CategorySwiper({ handleCategoryChange, selectedCategory }: { handleCategoryChange: (category: string) => void, selectedCategory: string }) {
+export function CategorySwiper({
+  handleCategoryChange,
+  selectedCategory,
+}: {
+  handleCategoryChange: (category: string) => void;
+  selectedCategory: string;
+}) {
   const { category } = useGetCategory();
 
-  console.log(selectedCategory, "category");
   return (
     <Swiper
       slidesPerView="auto"
@@ -28,11 +30,14 @@ export function CategorySwiper({ handleCategoryChange, selectedCategory }: { han
             variant="outline"
             className={cn(
               "cursor-pointer px-6 py-2 text-sm font-medium rounded-xl",
-              selectedCategory === category.id?.toString() && "bg-green-600 text-primary-foreground shadow hover:bg-green-600/90", selectedCategory === category.name && "bg-green-600 text-primary-foreground shadow hover:bg-green-600/90",
+              selectedCategory === category.id?.toString() &&
+                "bg-green-600 text-primary-foreground shadow hover:bg-green-600/90",
+              selectedCategory === category.name &&
+                "bg-green-600 text-primary-foreground shadow hover:bg-green-600/90"
             )}
             onClick={() => {
-              if (category.name === 'All') {
-                handleCategoryChange('All');
+              if (category.name === "All") {
+                handleCategoryChange("All");
               } else {
                 handleCategoryChange(category.id?.toString());
               }

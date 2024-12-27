@@ -22,7 +22,7 @@ const useGetCategory = () => {
 
   useEffect(() => {
     if (isCategoryFetched) {
-      setCategory([{ name: 'All', id: 'All' }, ...CategoryData?.data]);
+      setCategory([{ name: "All", id: "All" }, ...CategoryData?.data]);
     }
   }, [isCategoryFetched]);
 
