@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {   useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -27,7 +27,7 @@ export function OrderConfirmationPopup() {
   const isOrderConfirmOpen = useSelector(
     (state: RootState) => state.pos.isOrderConfirmOpen
   );
-  
+
   const [
     createOrder,
     {

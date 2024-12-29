@@ -50,7 +50,7 @@ const TableContainer = () => {
   return (
     <div className="w-full h-screen ">
       {/* header */}
-      <div className="w-full h-16 ">
+      <div className="w-full h-16 flex items-center ">
         <PosHeader userName="Prakash Raz Shreshtha" userRole="POS User" email="rzprakash16@gmail.com" />
       </div>
       {/* main product list */}

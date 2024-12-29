@@ -83,21 +83,7 @@ const PosPage = () => {
       )}
 
       <OrderConfirmationPopup />
-      <Dialog
-        open={isOrderTypeSelectorOpen}
-        onOpenChange={() => {
-          dispatch({ type: "pos/setIsOderSelctorOpen", payload: false });
-        }}
-      >
-        <DialogContent className="p-0 w-full max-w-lg shadow-none border-none h-full">
-          <OrderTypeSelector />
-          <DialogFooter className="p-4 flex items-center">
-            <Button size={"lg"} className="w-full">
-              Save
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+     
       <BillPrintLayout />
     </div>
   );

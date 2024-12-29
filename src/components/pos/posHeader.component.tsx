@@ -35,7 +35,7 @@ export default function PosHeader({
     }
   };
   return (
-    <div className="flex items-center justify-between px-4 py-2 bg-white border-b">
+    <div className="flex items-center justify-between px-4 w-full">
       {/* Left side - User Profile */}
       <div className="flex items-center gap-3">
         <Avatar className="h-10 w-10">

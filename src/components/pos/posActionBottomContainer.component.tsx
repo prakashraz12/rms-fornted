@@ -1,4 +1,4 @@
-import { HandCoins, HandPlatter, Loader2, Pause, Percent } from "lucide-react";
+import { HandCoins, HandPlatter, Loader2, Pause, Percent, X } from "lucide-react";
 import { Button } from "../ui/button";
 import useOrder from "@/hooks/useOrder";
 import { RootState } from "@/types/redux.type";
@@ -94,6 +94,8 @@ const PosActionBottomContainer = () => {
     dispatch(setPosSelectionType("NEW"));
   };
 
+
+
   const isLoading = isCompleteOrderLoading || isUpdateOrderLoading;
 
   return (
@@ -131,8 +133,8 @@ const PosActionBottomContainer = () => {
         </>
       ) : (
         <>
-          <Button className="w-full bg-blue-500 hover:bg-blue-600 h-16 rounded-none">
-            Add Discount <Percent />
+          <Button variant={"destructive"} className="w-full  h-16 rounded-none" onClick={()=>dispatch(setSelectedProducts([]))}>
+            Clear <X/>
           </Button>
           <Button
             onClick={handleHoldOrder}
