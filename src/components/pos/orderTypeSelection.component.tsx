@@ -52,9 +52,11 @@ export function OrderTypeSelector() {
     dispatch(setSelectedDeliveryAddress(address));
   };
 
-  console.log(selectedTables);
+  const selectedTableIds = useSelector(
+    (state: RootState) => state.pos.selectedTableIds
+  );
   return (
-    <Card className="w-full shadow-none">
+    <Card className="w-full shadow-none border-none">
       <CardHeader>
         <CardTitle className="text-md font-semibold">
           Choose Your Order Type
@@ -124,7 +126,7 @@ export function OrderTypeSelector() {
 
         {orderType === OrderType.DINE_IN && (
           <div className="space-y-4">
-            <div className="flex justify-center space-x-2 p-2 bg-muted rounded-lg">
+            <div className="flex justify-center space-x-2 p-2 bg-muted rounded-lg overflow-x-auto">
               {floorData?.map((floor) => (
                 <Button
                   key={floor.id}
@@ -137,6 +139,10 @@ export function OrderTypeSelector() {
               ))}
             </div>
             <ScrollArea className="h-[300px] w-full  p-4">
+              <div className="flex mb-4">
+                {" "}
+                [{selectedTableIds?.map((i) => <p>{i},</p>)}]
+              </div>
               <div className="grid grid-cols-4 gap-4">
                 {floorData
                   .find((floor) => floor.id === selectedFloor)
@@ -148,13 +154,16 @@ export function OrderTypeSelector() {
                           ? "default"
                           : "outline"
                       }
-                      onClick={() => handleTableSelect(table.id?.toString())}
+                      onClick={() => {
+                        if (table.status === "OCCUPIED") return;
+                        handleTableSelect(table.id?.toString());
+                      }}
                       className={`h-24 p-2 flex flex-col items-center justify-center ${
-                        table.status === "occupied"
+                        table.status === "OCCUPIED"
                           ? "opacity-50 cursor-not-allowed"
                           : ""
                       }`}
-                      disabled={table.status === "occupied"}
+                      disabled={table.status === "OCCUPIED"}
                     >
                       <svg viewBox="0 0 24 24" className="w-12 h-12 mb-2">
                         <circle cx="12" cy="12" r="10" fill="currentColor" />
@@ -162,7 +171,7 @@ export function OrderTypeSelector() {
                           cx="12"
                           cy="12"
                           r="6"
-                          fill={table.status === "occupied" ? "red" : "green"}
+                          fill={table.status === "OCCUPIED" ? "red" : "green"}
                         />
                       </svg>
                       <span className="text-sm font-semibold">

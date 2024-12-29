@@ -9,3 +9,7 @@ export const USER_INFO_kEY = "USER-INFO";
 export const REMEMBER_ME_KEY = "SAVED_DATA@+";
 
 export const PRODUCT_IMAGE_KEY = "product-image";
+
+export const ORDER_KEY = "ORDER_KEY";
+
+export  const DISCOUNT_KEY = "DISCOUNT_KEY";

@@ -1,12 +1,13 @@
 import { Table } from "@/components/floor/types/floor.types";
+import { ProductType } from "./product.type";
 
-export interface OrderType {
+export interface OrderResponse {
   id: number;
   orderNumber: string;
-  status: string; // Example: 'pending', 'completed', etc.
+  status: string;
   remarks: string | null;
-  orderType: "DINE_IN" | "TAKEAWAY" | "DELIVERY"; // Assuming possible values
-  orderCreatorType: "restaurant" | "user"; // Assuming possible values
+  orderType: "DINE_IN" | "DELIVERY" | "TAKEAWAY";
+  orderCreatorType: "restaurant" | "user"; 
   mergedWithOrderId: number | null;
   deliveryAddress: string;
   deliveryCharges: string;
@@ -16,10 +17,10 @@ export interface OrderType {
   serviceCharges: string;
   discount: string;
   vat: string;
-  paymentMethod: string | null; // Could be 'CASH', 'CARD', etc.
-  tableIds: string[]; // IDs of tables
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  paymentMethod: string | null; 
+  tableIds: string[];
+  createdAt: string;
+  updatedAt: string;
   orderItems: OrderItem[];
   tables: Table[];
 }
@@ -29,18 +30,9 @@ interface OrderItem {
   quantity: number;
   unitPrice: string;
   name: string;
+  productName: string;
+  isComplete: boolean;
+  product: ProductType;
 }
 
-interface Product {
-  id: number;
-  name: string;
-  price: string;
-  offerPrice: string | null;
-  offerValidUntil: string | null;
-  description: string;
-  image: {
-    publicId: string;
-    url: string;
-  };
-  productType: "SINGLE" | "COMBO";
-}
+

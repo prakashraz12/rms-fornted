@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import logo from "./assets/icons/logo.png";
 import noImage from "./assets/icons/no-image.png";
+import mp3 from "./assets/sound/bell.mp3"
 import { Banknote, CreditCard, Landmark, FileCheck } from "lucide-react";
 
 //main color
@@ -64,6 +65,8 @@ export const LOGO_IMAGE = logo;
 export const COMPANY_NAME = "ForkFlow";
 
 export const NO_IMAGE = noImage;
+
+export const BELL_SOUND = mp3
 
 //user types
 export const USER_TYPES = [

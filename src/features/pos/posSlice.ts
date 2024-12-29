@@ -12,6 +12,12 @@ interface POSState {
   selectedDeliveryAddress: string;
   selectedFloorId: string;
   posSelectionType: "NEW" | "EXISTING";
+  selectPaymentMethod: string | null;
+  isSelectPaymentMethodOpen: boolean;
+  isPaymentSuccess: boolean;
+  billOrderData: any;
+  holdOrder: any | null;
+  discount: any;
 }
 
 const initialState: POSState = {
@@ -24,13 +30,20 @@ const initialState: POSState = {
   selectedDeliveryAddress: "",
   selectedFloorId: "",
   posSelectionType: "NEW",
+  selectPaymentMethod: null,
+  isSelectPaymentMethodOpen: false,
+  isPaymentSuccess: false,
+  billOrderData: null,
+  holdOrder: null,
+  discount: null
+  
 };
 
 const posSlice = createSlice({
   name: "pos",
   initialState,
   reducers: {
-    setSeletedProducts(state, action) {
+    setSelectedProducts(state, action) {
       state.seletedProducts = action.payload;
     },
     setSelectedOrders(state, action) {
@@ -58,11 +71,29 @@ const posSlice = createSlice({
     setPosSelectionType(state, action) {
       state.posSelectionType = action.payload;
     },
+    setSelectPaymentMethod(state, action) {
+      state.selectPaymentMethod = action.payload;
+    },
+    setIsSelectPaymentMethodOpen(state, action) {
+      state.isSelectPaymentMethodOpen = action.payload;
+    },
+    setIsPaymentSuccess(state, action) {
+      state.isPaymentSuccess = action.payload;
+    },
+    setBillOrderData(state, action) {
+      state.billOrderData = action.payload;
+    },
+    setHoldOrder(state, action) {
+      state.holdOrder = action.payload;
+    },
+    applyDiscountOnOrder(state, action) {
+      state.discount = action.payload;
+    },
   },
 });
 
 export const {
-  setSeletedProducts,
+  setSelectedProducts,
   setSelectedOrders,
   setSelectOrderType,
   setIsOderSelctorOpen,
@@ -71,6 +102,12 @@ export const {
   setSelectedDeliveryAddress,
   setSelectedFloorId,
   setPosSelectionType,
+  setSelectPaymentMethod,
+  setIsSelectPaymentMethodOpen,
+  setIsPaymentSuccess,
+  setBillOrderData,
+  setHoldOrder,
+  applyDiscountOnOrder
 } = posSlice.actions;
 
 export default posSlice.reducer;

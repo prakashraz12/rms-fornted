@@ -3,4 +3,7 @@ export interface selectedOrdersType {
   name: string;
   quantity: number;
   price: number;
+  variantId?: number;
+  variantName?: string;
+  isVariant?:boolean
 }

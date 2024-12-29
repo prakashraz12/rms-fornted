@@ -43,6 +43,7 @@ export const useProductForm = () => {
         offerPrice: values?.offerPrice?.toString(),
         offerValidUntil: values.offerValidUntil,
         comboItems: selectedProducts,
+        variants: values.variants,
       });
     } catch (error) {
       console.error("Error creating product:", error);

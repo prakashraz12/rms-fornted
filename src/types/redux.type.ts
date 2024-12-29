@@ -1,8 +1,9 @@
 import { QueryStatus } from "@reduxjs/toolkit/query";
-import { ProductType } from "./product.type";
 import { SelectedPosProductType } from "./PosSelectedProductTypes";
-import { OrderType } from "@/enums/orderType.enum";
 import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
+import { OrderResponse } from "./order.type";
+import { OrderType } from "@/enums/orderType.enum";
+import { IDiscount } from "./discount.type";
 
 interface BaseApi {
   queries: {
@@ -52,6 +53,18 @@ export interface RootState {
     selectedTableIds: number[];
     selectedDeliveryAddress: string;
     selectedFloorId: string;
+    selectPaymentMethod: string | null;
     posSelectionType: POS_SELECTION_TYPE;
+    isSelectPaymentMethodOpen: boolean;
+    isPaymentSuccess: boolean;
+    holdOrder: any | null;
+    discount: any;
+    billOrderData: any
   };
+  order: {
+    orders: OrderResponse[];
+  },
+  discount: {
+    discounts: IDiscount[]
+  }
 }

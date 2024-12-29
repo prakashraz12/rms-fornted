@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Fullscreen, Settings, ShoppingCart } from "lucide-react";
 import { OrderStatusDialog } from "./orders.component";
 import { CalculatorDialog } from "./calculator";
+import React from "react";
 
 interface HeaderProps {
   userName: string;
@@ -17,6 +18,22 @@ export default function PosHeader({
   email = "rzprakash16@gmail.com",
   avatarUrl,
 }: HeaderProps) {
+  const [orderDailogOpen, setOrderDailogOpen] = React.useState(false);
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`
+        );
+      });
+    } else {
+      document.exitFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to exit fullscreen mode: ${err.message} (${err.name})`
+        );
+      });
+    }
+  };
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-white border-b">
       {/* Left side - User Profile */}
@@ -35,6 +52,7 @@ export default function PosHeader({
       <div className="flex items-center gap-2">
         <CalculatorDialog />
         <Button
+          onClick={toggleFullScreen}
           variant="ghost"
           size="icon"
           className="h-10 w-10  bg-purple-100 hover:bg-purple-200"
@@ -48,8 +66,17 @@ export default function PosHeader({
         >
           <Settings className="h-5 w-5 text-blue-600" />
         </Button>
-
-        <OrderStatusDialog />
+        <Button
+          onClick={() => setOrderDailogOpen(true)}
+          className="h-10 px-4 bg-green-500 hover:bg-green-600 text-white"
+        >
+          <ShoppingCart className="h-5 w-5 mr-2" />
+          Orders
+        </Button>
+        <OrderStatusDialog
+          open={orderDailogOpen}
+          setOpen={setOrderDailogOpen}
+        />
       </div>
     </div>
   );

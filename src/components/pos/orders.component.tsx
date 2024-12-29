@@ -5,29 +5,37 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Clock, ShoppingCart, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, Monitor, Printer, XCircle } from "lucide-react";
 import useGetOrders from "@/hooks/useGetOrders";
 import {
+  setBillOrderData,
+  setIsPaymentSuccess,
   setPosSelectionType,
+  setSelectedDeliveryAddress,
   setSelectedOrders,
+  setSelectedTableId,
+  setSelectOrderType,
 } from "@/features/pos/posSlice";
 import { useDispatch } from "react-redux";
-import { OrderType } from "@/types/order.type";
+import { OrderResponse } from "@/types/order.type";
 import { format } from "date-fns";
 import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
 import { OrderType as ORDER_TYPE } from "@/enums/orderType.enum";
 import NoOrdersToday from "./noOrdersToday";
+import { Table } from "../floor/types/floor.types";
+import { Checkbox } from "../ui/checkbox";
+import { cn } from "@/lib/utils";
 
 const OrderCard: React.FC<{
-  order: OrderType;
-  handleLoadToPos: (order: OrderType) => void;
-}> = ({ order, handleLoadToPos }) => (
+  order: OrderResponse;
+  handleLoadToPos: (order: OrderResponse) => void;
+  handlePrintBill: (order: OrderResponse) => void
+}> = ({ order, handleLoadToPos, handlePrintBill }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -36,7 +44,7 @@ const OrderCard: React.FC<{
   >
     <div className="flex justify-between items-center mb-2">
       <h3 className="text-md font-semibold">{order.orderNumber}</h3>
-      <p>{`${order?.orderType} -  (${order?.orderType === ORDER_TYPE.DINE_IN && order?.tables?.map((table) => table.name).join(", ")})`}</p>
+      <p>{`${order?.orderType} -  (${order?.orderType === ORDER_TYPE.DINE_IN && order?.tables?.map((table: Table) => table.name).join(", ")})`}</p>
       <Badge
         variant={
           order.status === "completed"
@@ -53,35 +61,51 @@ const OrderCard: React.FC<{
       {format(order.createdAt, "dd/MM/yyyy")}
     </p>
     <ul className="list-disc list-inside mb-2">
-      {order.orderItems?.map((item, index) => (
-        <li key={index} className="text-sm">
-          {item?.name} ({item?.quantity}X)
+      {order?.orderItems?.map((item, index) => (
+        <li key={index} className={cn("text-sm  flex items-center gap-2", item?.isComplete && "line-through")}>
+         <Checkbox/> {item?.name || item?.productName} ({item?.quantity}X)
         </li>
       ))}
     </ul>
-    <Button onClick={() => handleLoadToPos(order)}>Load Pos</Button>
+    {order.status === "pending" ? <div className="flex justify-end mt-2">
+      <Button onClick={() => handleLoadToPos(order)}>Load Pos <Monitor /></Button>
+      <Button variant={"outline"} className="ml-2">Print KOT <Printer /></Button>
+    </div> : order.status === "complete" ? <div className="flex justify-end mt-2">
+      <Button onClick={() => handlePrintBill(order)}>Print Bill <Monitor /></Button>
+    </div> : null
+    }
   </motion.div>
 );
 
-export function OrderStatusDialog() {
+export function OrderStatusDialog({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}) {
   const { orders } = useGetOrders();
+
   const dispatch = useDispatch();
 
-  console.log(orders);
 
-  const handleLoadToPos = (order: OrderType) => {
+  const handleLoadToPos = (order: OrderResponse) => {
     dispatch(setPosSelectionType(POS_SELECTION_TYPE.EXISTING));
     dispatch(setSelectedOrders(order));
+    dispatch(setSelectOrderType(order.orderType));
+    dispatch(setSelectedDeliveryAddress(order.deliveryAddress));
+    dispatch(setSelectedTableId(order.tableIds));
+    setOpen(false);
   };
 
+  const handlePrintBill = (order: OrderResponse) => {
+ dispatch(setBillOrderData(order));
+ dispatch(setIsPaymentSuccess(true));
+  };
+
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="h-10 px-4 bg-green-500 hover:bg-green-600 text-white">
-          <ShoppingCart className="h-5 w-5 mr-2" />
-          Orders
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={() => setOpen(false)}>
       <DialogContent className="max-w-4xl w-11/12 h-[80vh]">
         <DialogHeader>
           <DialogTitle className="text-3xl font-bold text-center mb-4">
@@ -116,6 +140,7 @@ export function OrderStatusDialog() {
                       key={order.id}
                       order={order}
                       handleLoadToPos={handleLoadToPos}
+                      handlePrintBill={handlePrintBill}
                     />
                   ))}
               </AnimatePresence>
@@ -131,6 +156,7 @@ export function OrderStatusDialog() {
                       key={order.id}
                       order={order}
                       handleLoadToPos={handleLoadToPos}
+                      handlePrintBill={handlePrintBill}
                     />
                   ))}
               </AnimatePresence>
@@ -139,12 +165,12 @@ export function OrderStatusDialog() {
               <AnimatePresence>
                 {orders?.filter((order) => order.status === "rejected")
                   ?.length === 0 && (
-                  <div className="h-full flex items-center justify-center">
-                    <h2 className="text-xl">
-                      No orders have been rejected today!
-                    </h2>
-                  </div>
-                )}
+                    <div className="h-full flex items-center justify-center">
+                      <h2 className="text-xl">
+                        No orders have been rejected today!
+                      </h2>
+                    </div>
+                  )}
                 {orders
                   ?.filter((order) => order.status === "rejected")
                   ?.map((order) => (
@@ -152,6 +178,7 @@ export function OrderStatusDialog() {
                       key={order.id}
                       order={order}
                       handleLoadToPos={handleLoadToPos}
+                      handlePrintBill={handlePrintBill}
                     />
                   ))}
               </AnimatePresence>

@@ -18,6 +18,17 @@
   scroll-behavior: smooth;
 }
 
+@media print {
+  @page {
+    margin: 0;
+    size: 80mm 297mm; /* Set the page size for the printer */
+  }
+  body {
+    margin: 0;
+    -webkit-print-color-adjust: exact; /* Ensure colors print as displayed */
+  }
+}
+
 body {
   margin: 0;
   padding: 0;

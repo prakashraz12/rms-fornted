@@ -11,33 +11,47 @@ import {
 } from "../ui/table";
 import PosHeader from "./posHeader.component";
 import { RootState } from "@/types/redux.type";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
+import { calculateTotal } from "@/utils/getGrandToatlAmount";
 
 const TableContainer = () => {
   const posSelectionType = useSelector(
     (state: RootState) => state.pos.posSelectionType
   );
+
+
+  const discount = useSelector(
+    (state: RootState) => state.pos.discount
+  );
+  const paymentMethod = useSelector(
+    (state: RootState) => state.pos.selectPaymentMethod
+  );
+
+  const dispatch = useDispatch();
   const selectedOrders = useSelector(
     (state: RootState) => state.pos.selectedOrders
   );
 
-  const subTotal = selectedOrders?.orderItems?.reduce(
-    (total, item) => total + parseInt(item.price) * parseInt(item.quantity),
-    0
-  );
 
-  const calculatedServiceCharge = (subTotal: number) => {
-    return subTotal * 0.15;
-  };
+  const calculatedGrandToatl = calculateTotal({
+    subTotal: selectedOrders?.totalAmount,
+    discount: discount,
+    serviceChargeRate: 0.15,
+    vatRate: 0.15,
+    taxRate: 0.15,
+    applyVat: true,
+  });
 
-  const calculatedTax = subTotal * 0.15; // calculatedTax
+  const { grandTotal, serviceCharge, discountAmount, calculatedTax } =
+    calculatedGrandToatl;
+
 
   return (
     <div className="w-full h-screen ">
       {/* header */}
       <div className="w-full h-16 ">
-        <PosHeader />
+        <PosHeader userName="Prakash Raz Shreshtha" userRole="POS User" email="rzprakash16@gmail.com" />
       </div>
       {/* main product list */}
       <div className="flex flex-col justify-start h-[calc(100vh-4rem)] ">
@@ -62,21 +76,33 @@ const TableContainer = () => {
                 <TableRow>
                   <TableCell colSpan={2}>Subtotal</TableCell>
                   <TableCell className="text-right font-bold">
-                    Rs.{subTotal}
+                    Rs.{parseInt(selectedOrders?.totalAmount)?.toFixed(2)}
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
+
                 <TableRow>
                   <TableCell colSpan={2}>Service Charge 15%</TableCell>
                   <TableCell className="text-right">
-                    Rs.{calculatedServiceCharge(subTotal)}
+                    Rs.{serviceCharge.toFixed(2)}
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
+
+                {discount && (
+                  <TableRow>
+                    <TableCell colSpan={2}>Discount: <span className="border-b-2 border-dashed border-gray-400">{discount?.name}</span></TableCell>
+                    <TableCell className="text-right font-bold">
+                      (- Rs.{discountAmount.toFixed(2)})
+                    </TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                )}
+
                 <TableRow>
                   <TableCell colSpan={2}>Tax 15%</TableCell>
                   <TableCell className="text-right">
-                    Rs.{calculatedTax}
+                    Rs.{calculatedTax?.toFixed(2)}
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
@@ -87,12 +113,26 @@ const TableContainer = () => {
                   </TableCell>
                   <TableCell className="text-right font-bold">
                     Rs.
-                    {(
-                      subTotal +
-                      calculatedServiceCharge(subTotal) +
-                      calculatedTax
-                    ).toFixed(2)}
+                    {grandTotal.toFixed(2)}
                   </TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2} className="font-bold flex gap-2">
+                    Payment Method:
+                    <span
+                      onClick={() =>
+                        dispatch({
+                          type: "pos/setIsSelectPaymentMethodOpen",
+                          payload: true,
+                        })
+                      }
+                      className="border-b-2 border-dashed border-gray-400 cursor-pointer"
+                    >
+                      {paymentMethod === null ? "N/A" : paymentMethod}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-right font-bold"></TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableFooter>

@@ -10,31 +10,26 @@ import { motion } from "framer-motion";
 
 import { PAYMENT_METHODS } from "@/constant";
 import { PaymentMethod } from "@/enums/paymentMethod.enum";
+import { RootState } from "@/types/redux.type";
+import { useDispatch, useSelector } from "react-redux";
 
-interface PaymentSelectorDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSelectPayment: (method: PaymentMethod | null) => void;
-  selectedMethod: PaymentMethod | null;
-  setSelectedMethod: React.Dispatch<React.SetStateAction<PaymentMethod | null>>;
-}
+export function PaymentSelector() {
+  const dispatch = useDispatch();
 
-export function PaymentSelector({
-  isOpen,
-  onClose,
-  onSelectPayment,
-  selectedMethod,
-  setSelectedMethod,
-}: PaymentSelectorDialogProps) {
-  const handleSubmit = () => {
-    if (selectedMethod) {
-      onSelectPayment(selectedMethod);
-      onClose();
-    }
-  };
+  const paymnetMethod = useSelector(
+    (state: RootState) => state.pos.selectPaymentMethod
+  );
+  const isPaymentMethodOpen = useSelector(
+    (state: RootState) => state.pos.isSelectPaymentMethodOpen
+  );
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isPaymentMethodOpen}
+      onOpenChange={() =>
+        dispatch({ type: "pos/setIsSelectPaymentMethodOpen", payload: false })
+      }
+    >
       <DialogContent className="sm:max-w-[700px] p-0">
         <DialogHeader className="p-8 text-center">
           <DialogTitle className="text-xl font-bold">
@@ -49,15 +44,22 @@ export function PaymentSelector({
               whileTap={{ scale: 0.95 }}
             >
               <Button
-                variant={
-                  selectedMethod === method.value ? "default" : "outline"
-                }
+                variant={paymnetMethod === method.value ? "default" : "outline"}
                 className="w-full h-40 p-6 flex flex-col items-center justify-center space-y-4 text-center transition-all rounded-xl"
-                onClick={() => setSelectedMethod(method.value as PaymentMethod)}
+                onClick={() => {
+                  dispatch({
+                    type: "pos/setSelectPaymentMethod",
+                    payload: method.value,
+                  });
+                  dispatch({
+                    type: "pos/setIsSelectPaymentMethodOpen",
+                    payload: false,
+                  });
+                }}
               >
                 <method.icon className="h-10 w-10" />
                 <span
-                  className={`text-2xl font-semibold ${selectedMethod === method.value ? "text-white" : "text-gray-800"}`}
+                  className={`text-2xl font-semibold ${paymnetMethod === method.value ? "text-white" : "text-gray-800"}`}
                 >
                   {method.label}
                 </span>
@@ -65,17 +67,6 @@ export function PaymentSelector({
             </motion.div>
           ))}
         </div>
-        <DialogFooter className="p-4 bg-white border-t">
-          <Button
-            onClick={handleSubmit}
-            className="w-full h-16 text-xl font-semibold rounded-xl transition-all"
-            disabled={!selectedMethod}
-          >
-            {selectedMethod
-              ? "Confirm Payment Method"
-              : "Select a Payment Method"}
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

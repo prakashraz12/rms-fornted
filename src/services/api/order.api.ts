@@ -1,4 +1,7 @@
+import { applyDiscountOnOrder, setBillOrderData, setIsPaymentSuccess, setPosSelectionType, setSelectedOrders, setSelectedProducts, setSelectOrderType } from "@/features/pos/posSlice";
 import { baseApiSlice } from "../baseApi";
+import { setOrder } from "@/features/order/orderSlice";
+import { OrderResponse } from "@/types/order.type";
 
 const orderApi = baseApiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -8,12 +11,38 @@ const orderApi = baseApiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      onQueryStarted: async (_, { getState, dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+
+          const previousOrders = getState() as any;
+
+
+          if (data?.data) {
+            dispatch(setSelectedProducts([]));
+            dispatch(setOrder([...previousOrders?.order?.orders, data?.data]));
+
+          }
+        } catch (err) {
+          console.error("Create order failed:", err);
+        }
+      },
     }),
     getOrderByRestaurantId: builder.query({
       query: ({ page, limit, startDate, endDate, restaurantId }) => ({
         url: `/order?page=${page}&limit=${limit}&restaurantId=${restaurantId}&startDate=${startDate}&endDate=${endDate}`,
         method: "GET",
       }),
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          if (data?.data) {
+            dispatch(setOrder(data?.data?.orders));
+          }
+        } catch (err) {
+          console.error("Get order failed:", err);
+        }
+      },
     }),
     completeOrder: builder.mutation({
       query: (data) => ({
@@ -21,6 +50,25 @@ const orderApi = baseApiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      onQueryStarted: async (_, { getState, dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          const previousOrders = getState() as any;
+
+          if (data?.data) {
+            dispatch(setBillOrderData(data?.data));
+            dispatch(setIsPaymentSuccess(true));
+            dispatch(setOrder(previousOrders?.order?.orders?.map((i: OrderResponse) => i?.id === data?.data?.id ? { ...i, status: data?.data?.status } : i)));
+            dispatch(setSelectedProducts([]));
+            dispatch(setPosSelectionType("NEW"));
+            dispatch(setSelectedOrders(null));
+            dispatch(applyDiscountOnOrder(null))
+
+          }
+        } catch (err) {
+          console.error("Complete order failed:", err);
+        }
+      },
     }),
     updateOrder: builder.mutation({
       query: ({ data, id }) => ({

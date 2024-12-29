@@ -2,6 +2,8 @@ import { Category } from "./category.type";
 
 export interface ProductVariant {
   name: string;
+  id?:string;
+
   price: number;
 }
 
@@ -48,7 +50,10 @@ export interface ProductType {
   offerPrice: number;
   offerValidUntil: Date | null;
   comboItems: SelectedProductTypes[];
+  variants: ProductVariant[];
 }
+
+
 export const initialValues: ProductFormValues = {
   name: "",
   description: "",

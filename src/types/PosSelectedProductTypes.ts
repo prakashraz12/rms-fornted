@@ -3,4 +3,7 @@ export interface SelectedPosProductType {
   quantity: number;
   price: number;
   name: string;
+  variantId?: number;
+  variantName?: string;
+  isVariant?:boolean
 }

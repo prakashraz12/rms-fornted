@@ -2,6 +2,7 @@ import MainLayout from "@/components/layouts/layout";
 import { ProductCreationForm } from "@/components/product/createProduct.component";
 import AuthPage from "@/pages/auth.page";
 import DashBoard from "@/pages/dashboard.page";
+import KitchenBoard from "@/pages/digitalKOT.page";
 import FloorManagement from "@/pages/floorManagement.page";
 import PosPage from "@/pages/POS.page";
 import Products from "@/pages/products.page";
@@ -61,4 +62,8 @@ export const router = createBrowserRouter([
     path: "/restaurant/portal/login",
     element: <AuthPage />,
   },
+  {
+    path:"/kitchen-board",
+    element: <KitchenBoard />
+  }
 ]);

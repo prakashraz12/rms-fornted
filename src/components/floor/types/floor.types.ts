@@ -8,6 +8,7 @@ export interface Table {
   seats: number;
   shape: TableShape;
   timeLeft?: string;
+  name?: string;
 }
 
 export interface TableStatusCardProps {
