@@ -59,12 +59,17 @@ export interface RootState {
     isPaymentSuccess: boolean;
     holdOrder: any | null;
     discount: any;
-    billOrderData: any
+    billOrderData: any;
+    taxRate: number;
+    vatRate: number;
+    serviceChargeRate: number;
   };
   order: {
     orders: OrderResponse[];
-  },
+    selectedCustomer: string;
+    remarks: string;
+  };
   discount: {
-    discounts: IDiscount[]
-  }
+    discounts: IDiscount[];
+  };
 }

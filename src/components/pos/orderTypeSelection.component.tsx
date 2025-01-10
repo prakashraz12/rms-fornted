@@ -17,6 +17,8 @@ import {
 import { OrderType } from "@/enums/orderType.enum";
 
 export function OrderTypeSelector() {
+  const dispatch = useDispatch();
+
   const orderType = useSelector(
     (state: RootState) => state.pos.selectOrderType
   );
@@ -26,7 +28,6 @@ export function OrderTypeSelector() {
   const deliveryAddress = useSelector(
     (state: RootState) => state.pos.selectedDeliveryAddress
   );
-  const dispatch = useDispatch();
 
   const { floorData } = useGetTables();
   const [selectedFloor, setSelectedFloor] = useState(1);
@@ -52,9 +53,6 @@ export function OrderTypeSelector() {
     dispatch(setSelectedDeliveryAddress(address));
   };
 
-  const selectedTableIds = useSelector(
-    (state: RootState) => state.pos.selectedTableIds
-  );
   return (
     <Card className="w-full shadow-none border-none">
       <CardHeader>
@@ -64,7 +62,7 @@ export function OrderTypeSelector() {
       </CardHeader>
       <CardContent className="space-y-6 p-2">
         <RadioGroup
-          value={orderType || OrderType.DINE_IN}
+          value={orderType || ""}
           onValueChange={handleOrderTypeChange}
           className="flex  space-x-4"
         >
@@ -76,7 +74,7 @@ export function OrderTypeSelector() {
             />
             <Label
               htmlFor="dine-in"
-              className={`flex flex-col items-center p-6 rounded-lg cursor-pointer transition-all ${
+              className={`flex flex-col items-center p-4 rounded-lg cursor-pointer transition-all ${
                 orderType === OrderType.DINE_IN
                   ? "bg-green-600 text-primary-foreground"
                   : "bg-muted"
@@ -94,9 +92,9 @@ export function OrderTypeSelector() {
             />
             <Label
               htmlFor="delivery"
-              className={`flex flex-col items-center p-6 rounded-lg cursor-pointer transition-all ${
+              className={`flex flex-col items-center p-4 rounded-lg cursor-pointer transition-all ${
                 orderType === OrderType.DELIVERY
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-green-600 text-primary-foreground"
                   : "bg-muted"
               }`}
             >
@@ -112,9 +110,9 @@ export function OrderTypeSelector() {
             />
             <Label
               htmlFor="take-away"
-              className={`flex flex-col items-center p-6 rounded-lg cursor-pointer transition-all ${
+              className={`flex flex-col items-center p-4 rounded-lg cursor-pointer transition-all ${
                 orderType === OrderType.TAKE_AWAY
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-green-600 text-primary-foreground"
                   : "bg-muted"
               }`}
             >
@@ -126,7 +124,7 @@ export function OrderTypeSelector() {
 
         {orderType === OrderType.DINE_IN && (
           <div className="space-y-4">
-            <div className="flex justify-center space-x-2 p-2 bg-muted rounded-lg overflow-x-auto">
+            <div className="flex justify-center space-x-2 p-2  rounded-lg overflow-scroll">
               {floorData?.map((floor) => (
                 <Button
                   key={floor.id}
@@ -138,11 +136,7 @@ export function OrderTypeSelector() {
                 </Button>
               ))}
             </div>
-            <ScrollArea className="h-[300px] w-full  p-4">
-              <div className="flex mb-4">
-                {" "}
-                [{selectedTableIds?.map((i) => <p>{i},</p>)}]
-              </div>
+            <ScrollArea className="h-[300px] w-full  p-2">
               <div className="grid grid-cols-4 gap-4">
                 {floorData
                   .find((floor) => floor.id === selectedFloor)
@@ -150,7 +144,7 @@ export function OrderTypeSelector() {
                     <Button
                       key={table.id}
                       variant={
-                        selectedTables.includes(table.id)
+                        selectedTables?.includes(table.id)
                           ? "default"
                           : "outline"
                       }

@@ -1,160 +1,81 @@
-import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal, FilterIcon } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import BorderRadiusWrapper from "@/components/common/borderRadiusWrapper.component";
-import {
-  Select,
-  SelectTrigger,
-  SelectItem,
-  SelectContent,
-} from "@/components/ui/select";
+import useGetOrders from "@/hooks/useGetOrders";
+import { OrderType } from "@/enums/orderType.enum";
+import { HandPlatter, PackageOpen } from "lucide-react";
 
 interface Order {
-  id: string;
-  type: "Dine-in" | "Takeaway" | "Delivery";
-  totalItems: number;
-  status: "Pending" | "Completed" | "Cancelled";
-  tableNo?: number;
+  tableNumber: number;
+  items: number;
   total: number;
+  status: "pending" | "completed";
 }
 
-const orders: Order[] = [
-  {
-    id: "ORD001",
-    type: "Dine-in",
-    totalItems: 3,
-    status: "Pending",
-    tableNo: 5,
-    total: 45.99,
-  },
-  {
-    id: "ORD002",
-    type: "Takeaway",
-    totalItems: 2,
-    status: "Completed",
-    total: 25.5,
-  },
-  {
-    id: "ORD003",
-    type: "Delivery",
-    totalItems: 4,
-    status: "Pending",
-    total: 60.75,
-  },
-  {
-    id: "ORD004",
-    type: "Dine-in",
-    totalItems: 1,
-    status: "Cancelled",
-    tableNo: 3,
-    total: 15.99,
-  },
-  {
-    id: "ORD005",
-    type: "Takeaway",
-    totalItems: 3,
-    status: "Completed",
-    total: 35.25,
-  },
-];
+export default function RecentOrders() {
+  const { orders } = useGetOrders();
 
-const RecentOrdersTable: React.FC = () => {
+  const getStatusStyles = (status: Order["status"]) => {
+    switch (status) {
+      case "pending":
+        return "bg-emerald-50 text-emerald-700 hover:bg-emerald-50";
+      case "completed":
+        return "bg-yellow-50 text-yellow-700 hover:bg-yellow-50";
+      default:
+        return "";
+    }
+  };
+
+  const getStatusLabel = (status: Order["status"]) => {
+    switch (status) {
+      case "pending":
+        return "pending";
+      case "completed":
+        return "Completed";
+      default:
+        return status;
+    }
+  };
+
   return (
-    <BorderRadiusWrapper class="shadow-sm">
-      <h1 className="text-2xl font-bold"> Orders</h1>
-      <p className="text-sm text-muted-foreground">Recent Orders</p>
-      <div className="flex items-center gap-2 mt-3">
-        <Input type="text" placeholder="Search" className="w-1/2" />
-        <div className="w-auto">
-          <Select>
-            <SelectTrigger>
-              <FilterIcon className="w-4 h-4" />
-              <p>Filter</p>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Order ID</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Total Items</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Table No.</TableHead>
-            <TableHead className="text-right">Total</TableHead>
-            <TableHead className="w-[70px]"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orders.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell className="font-medium">{order.id}</TableCell>
-              <TableCell>{order.type}</TableCell>
-              <TableCell>{order.totalItems}</TableCell>
-              <TableCell>
-                <Badge
-                  variant={
-                    order.status === "Completed"
-                      ? "secondary"
-                      : order.status === "Pending"
-                        ? "default"
-                        : "destructive"
-                  }
-                >
-                  {order.status}
-                </Badge>
-              </TableCell>
-              <TableCell>{order.tableNo || "N/A"}</TableCell>
-              <TableCell className="text-right">
-                ${order.total.toFixed(2)}
-              </TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
-                      <span className="sr-only">Open menu</span>
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem>View details</DropdownMenuItem>
-                    <DropdownMenuItem>Update status</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Cancel order</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </BorderRadiusWrapper>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-base font-semibold">Recent Orders</CardTitle>
+      </CardHeader>
+      <CardContent className="grid gap-4">
+        {orders?.map((order) => (
+          <div
+            key={order.orderNumber}
+            className="flex items-center justify-between"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50">
+                {order?.orderType === "TAKE_AWAY" && (
+                  <HandPlatter className="h-6 w-6 text-emerald-900" />
+                )}
+                {order?.orderType === "DELIVERY" && (
+                  <PackageOpen className="h-6 w-6 text-emerald-900" />
+                )}
+              </div>
+              <div className="space-y-1">
+                {order?.orderType === OrderType.DINE_IN ? (
+                  <></>
+                ) : (
+                  <p>{order?.orderType}</p>
+                )}
+                <p className="text-sm text-muted-foreground">
+                  {order?.totalItems} items • Rs.{order?.totalAmount}
+                </p>
+              </div>
+            </div>
+            <Badge
+              variant="secondary"
+              className={getStatusStyles(order.status)}
+            >
+              {getStatusLabel(order.status)}
+            </Badge>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
   );
-};
-
-export default RecentOrdersTable;
+}

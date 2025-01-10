@@ -2,7 +2,7 @@ import { Category } from "./category.type";
 
 export interface ProductVariant {
   name: string;
-  id?:string;
+  id?: string;
 
   price: number;
 }
@@ -52,7 +52,6 @@ export interface ProductType {
   comboItems: SelectedProductTypes[];
   variants: ProductVariant[];
 }
-
 
 export const initialValues: ProductFormValues = {
   name: "",

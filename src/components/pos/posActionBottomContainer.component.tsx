@@ -1,6 +1,12 @@
-import { HandCoins, HandPlatter, Loader2, Pause, Percent, X } from "lucide-react";
+import {
+  HandCoins,
+  HandPlatter,
+  Loader2,
+  Pause,
+  Percent,
+  X,
+} from "lucide-react";
 import { Button } from "../ui/button";
-import useOrder from "@/hooks/useOrder";
 import { RootState } from "@/types/redux.type";
 import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
 import { useSelector } from "react-redux";
@@ -8,22 +14,37 @@ import {
   useCompleteOrderMutation,
   useUpdateOrderMutation,
 } from "@/services/api/order.api";
-import { PaymentSelector } from "./paymentMethodSelctor.component";
+import { PaymentSelector } from "./popups/paymentMethodSelctorPopUp.component";
 import { useDispatch } from "react-redux";
-import { setHoldOrder, setPosSelectionType, setSelectedProducts, setSelectPaymentMethod } from "@/features/pos/posSlice";
+import {
+  setHoldOrder,
+  setPosSelectionType,
+  setSelectedProducts,
+} from "@/features/pos/posSlice";
 import { selectedOrdersType } from "@/types/selectedOrders.type";
-import { DiscountPopup } from "./addDiscount.component";
+import { DiscountPopup } from "./popups/addDiscount.component";
 import { useState } from "react";
+import usePlaceOrder from "@/hooks/usePlacedOrder";
 
 const PosActionBottomContainer = () => {
+  const { handlePlaceOrder, isOrderConfirmLoading } = usePlaceOrder();
 
   const discount = useSelector((state: RootState) => state.pos.discount);
   const dispatch = useDispatch();
 
   const [addDiscount, setAddDiscount] = useState(false);
 
+  const vatRate = useSelector((state: RootState) => state.pos.vatRate);
+  const serviceChargeRate = useSelector(
+    (state: RootState) => state.pos.serviceChargeRate
+  );
+
   const selectedProducts = useSelector(
     (state: RootState) => state.pos.seletedProducts
+  );
+
+  const selectedCustomer = useSelector(
+    (state: RootState) => state.order.selectedCustomer
   );
 
   const paymentMethod = useSelector(
@@ -37,8 +58,6 @@ const PosActionBottomContainer = () => {
   const deliveryAddress = useSelector(
     (state: RootState) => state.pos.selectedDeliveryAddress
   );
-
-  const { handlePlaceOrder } = useOrder();
 
   const [completeOrder, { isLoading: isCompleteOrderLoading }] =
     useCompleteOrderMutation();
@@ -54,32 +73,43 @@ const PosActionBottomContainer = () => {
     (state: RootState) => state.pos.posSelectionType
   );
 
+  console.log(discount);
+
   const handleCompleteOrder = async () => {
     if (paymentMethod) {
       await completeOrder({
         orderId: selectedOrders.id,
-        vat: 0,
-        serviceCharges: 0,
+        vat: vatRate,
+        serviceCharges: serviceChargeRate,
         paymentMethod: paymentMethod,
         isDiscountApplied: discount !== null,
         discountType: discount?.type,
         discountAmount: discount?.value,
-        discountId: discount?.type === "FLAT" ? null : discount?.id
-
+        discountId: discount?.type === "FLAT" ? null : discount?.discountId,
+        orderItems: selectedOrders.orderItems.map(
+          (item: selectedOrdersType) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            variantId: item.variantId,
+          })
+        ),
+        customerId: selectedCustomer.length > 0 ? selectedCustomer : undefined,
       });
     } else {
-      dispatch(setSelectPaymentMethod(true));
+      dispatch({ type: "pos/setIsSelectPaymentMethodOpen", payload: true });
     }
   };
 
   const handleUpdateOrder = async () => {
     await updateOrder({
       data: {
-        orderItems: selectedOrders.orderItems.map((item: selectedOrdersType) => ({
-          productId: item.productId,
-          quantity: item.quantity,
-          variantId: item.variantId,
-        })),
+        orderItems: selectedOrders.orderItems.map(
+          (item: selectedOrdersType) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            variantId: item.variantId,
+          })
+        ),
         orderType: selectedOrders.orderType,
         tableIds: tableIds,
         deliveryAddress: deliveryAddress,
@@ -94,8 +124,6 @@ const PosActionBottomContainer = () => {
     dispatch(setPosSelectionType("NEW"));
   };
 
-
-
   const isLoading = isCompleteOrderLoading || isUpdateOrderLoading;
 
   return (
@@ -104,7 +132,6 @@ const PosActionBottomContainer = () => {
         <>
           <Button
             onClick={() => setAddDiscount(true)}
-
             className="w-full bg-blue-500 hover:bg-blue-600 h-16 rounded-none"
           >
             Add Discount <Percent />
@@ -129,12 +156,19 @@ const PosActionBottomContainer = () => {
             Pay <HandCoins />
           </Button>
           <PaymentSelector />
-          <DiscountPopup isOpen={addDiscount} onClose={() => setAddDiscount(false)} />
+          <DiscountPopup
+            isOpen={addDiscount}
+            onClose={() => setAddDiscount(false)}
+          />
         </>
       ) : (
         <>
-          <Button variant={"destructive"} className="w-full  h-16 rounded-none" onClick={()=>dispatch(setSelectedProducts([]))}>
-            Clear <X/>
+          <Button
+            variant={"destructive"}
+            className="w-full  h-16 rounded-none"
+            onClick={() => dispatch(setSelectedProducts([]))}
+          >
+            Clear <X />
           </Button>
           <Button
             onClick={handleHoldOrder}
@@ -143,12 +177,12 @@ const PosActionBottomContainer = () => {
             Hold Order <Pause />
           </Button>
           <Button
+            disabled={isOrderConfirmLoading}
             className="w-full bg-green-500 h-16 rounded-none border-none hover:bg-green-600 outline-none"
             onClick={handlePlaceOrder}
           >
             Place Order <HandPlatter />
           </Button>
-
         </>
       )}
     </div>

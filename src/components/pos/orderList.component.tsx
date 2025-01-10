@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { RootState } from "@/types/redux.type";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedOrders, setSelectedProducts } from "@/features/pos/posSlice";
+import {
+  setSelectedOrders,
+  setSelectedProducts,
+} from "@/features/pos/posSlice";
 import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
 import { selectedOrdersType } from "@/types/selectedOrders.type";
 
@@ -87,8 +90,6 @@ export default function OrderTable() {
       ? selectedOrders?.orderItems
       : selectedProducts;
 
-
-      console.log(selectedProducts)
   return (
     <>
       <div className="flex-grow overflow-auto h-[calc(100vh-26rem)]">
@@ -97,7 +98,7 @@ export default function OrderTable() {
             {orders?.map((item: selectedOrdersType) => (
               <TableRow key={item.productId}>
                 <TableCell className="font-medium w-1/2">
-                  {item?.name} {item?.variantName && `(${item?.variantName})`} 
+                  {item?.name} {item?.variantName && `(${item?.variantName})`}
                 </TableCell>
                 <TableCell className="w-1/4">
                   <div className="flex items-center justify-center gap-2">

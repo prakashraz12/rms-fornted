@@ -18,12 +18,16 @@ interface POSState {
   billOrderData: any;
   holdOrder: any | null;
   discount: any;
+  taxRate: number;
+  vatRate: number;
+  serviceChargeRate: number;
+  discountType: any;
 }
 
 const initialState: POSState = {
   selectedOrders: null,
   seletedProducts: [],
-  selectOrderType: OrderType.DINE_IN || "",
+  selectOrderType: null,
   isOderSelctorOpen: false,
   isOrderConfirmOpen: false,
   selectedTableIds: [],
@@ -35,8 +39,11 @@ const initialState: POSState = {
   isPaymentSuccess: false,
   billOrderData: null,
   holdOrder: null,
-  discount: null
-  
+  discount: null,
+  taxRate: 0,
+  vatRate: 0,
+  serviceChargeRate: 0,
+  discountType: null,
 };
 
 const posSlice = createSlice({
@@ -89,6 +96,18 @@ const posSlice = createSlice({
     applyDiscountOnOrder(state, action) {
       state.discount = action.payload;
     },
+    setTaxRate(state, action) {
+      state.taxRate = action.payload;
+    },
+    setVatRate(state, action) {
+      state.vatRate = action.payload;
+    },
+    setServiceChargeRate(state, action) {
+      state.serviceChargeRate = action.payload;
+    },
+    setDiscountType(state, action) {
+      state.discountType = action.payload;
+    },
   },
 });
 
@@ -107,7 +126,11 @@ export const {
   setIsPaymentSuccess,
   setBillOrderData,
   setHoldOrder,
-  applyDiscountOnOrder
+  applyDiscountOnOrder,
+  setTaxRate,
+  setVatRate,
+  setServiceChargeRate,
+  setDiscountType,
 } = posSlice.actions;
 
 export default posSlice.reducer;

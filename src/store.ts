@@ -12,14 +12,11 @@ export const store = configureStore({
     auth: authReducer,
     pos: posReducer,
     order: orderReducer,
-    discount: discountReducer
+    discount: discountReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
-      .prepend(baseApiSlice.middleware)
-
+    getDefaultMiddleware().prepend(baseApiSlice.middleware),
 });
-
 
 setupListeners(store.dispatch);
 

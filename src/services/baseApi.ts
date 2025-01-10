@@ -66,7 +66,6 @@ const baseQueryWithReAuth: BaseQueryFn<
           extraOptions
         );
 
-        console.log(refreshResult);
         if (
           refreshResult.data &&
           (refreshResult.data as RefreshTokenResponse).data?.accessToken

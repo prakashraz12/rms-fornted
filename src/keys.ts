@@ -12,4 +12,4 @@ export const PRODUCT_IMAGE_KEY = "product-image";
 
 export const ORDER_KEY = "ORDER_KEY";
 
-export  const DISCOUNT_KEY = "DISCOUNT_KEY";
+export const DISCOUNT_KEY = "DISCOUNT_KEY";

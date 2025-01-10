@@ -24,6 +24,7 @@ const useGetTables = () => {
     floorData,
     isFloorFetched,
     isFloorFetching,
+    setFloorData,
   };
 };
 

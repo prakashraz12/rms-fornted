@@ -23,18 +23,18 @@ import {
 } from "@/features/pos/posSlice";
 import { useDispatch } from "react-redux";
 import { OrderResponse } from "@/types/order.type";
-import { format } from "date-fns";
 import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
 import { OrderType as ORDER_TYPE } from "@/enums/orderType.enum";
-import NoOrdersToday from "./noOrdersToday";
-import { Table } from "../floor/types/floor.types";
-import { Checkbox } from "../ui/checkbox";
+import NoOrdersToday from "../noOrdersToday";
+import { Table } from "../../floor/types/floor.types";
+import { Checkbox } from "../../ui/checkbox";
 import { cn } from "@/lib/utils";
+import { timeAgo } from "@/utils/timeAgo";
 
 const OrderCard: React.FC<{
   order: OrderResponse;
   handleLoadToPos: (order: OrderResponse) => void;
-  handlePrintBill: (order: OrderResponse) => void
+  handlePrintBill: (order: OrderResponse) => void;
 }> = ({ order, handleLoadToPos, handlePrintBill }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -57,23 +57,36 @@ const OrderCard: React.FC<{
         {order.status}
       </Badge>
     </div>
-    <p className="text-sm text-gray-600 mb-2">
-      {format(order.createdAt, "dd/MM/yyyy")}
-    </p>
+    <p className="text-sm text-gray-600 mb-2">{timeAgo(order.createdAt)}.</p>
     <ul className="list-disc list-inside mb-2">
       {order?.orderItems?.map((item, index) => (
-        <li key={index} className={cn("text-sm  flex items-center gap-2", item?.isComplete && "line-through")}>
-         <Checkbox/> {item?.name || item?.productName} ({item?.quantity}X)
+        <li
+          key={index}
+          className={cn(
+            "text-sm  flex items-center gap-2",
+            item?.isComplete && "line-through"
+          )}
+        >
+          <Checkbox /> {item?.name || item?.productName} ({item?.quantity}X)
         </li>
       ))}
     </ul>
-    {order.status === "pending" ? <div className="flex justify-end mt-2">
-      <Button onClick={() => handleLoadToPos(order)}>Load Pos <Monitor /></Button>
-      <Button variant={"outline"} className="ml-2">Print KOT <Printer /></Button>
-    </div> : order.status === "complete" ? <div className="flex justify-end mt-2">
-      <Button onClick={() => handlePrintBill(order)}>Print Bill <Monitor /></Button>
-    </div> : null
-    }
+    {order.status === "pending" ? (
+      <div className="flex justify-end mt-2">
+        <Button onClick={() => handleLoadToPos(order)}>
+          Load Pos <Monitor />
+        </Button>
+        <Button variant={"outline"} className="ml-2">
+          Print KOT <Printer />
+        </Button>
+      </div>
+    ) : order.status === "complete" ? (
+      <div className="flex justify-end mt-2">
+        <Button onClick={() => handlePrintBill(order)}>
+          Print Bill <Monitor />
+        </Button>
+      </div>
+    ) : null}
   </motion.div>
 );
 
@@ -88,7 +101,6 @@ export function OrderStatusDialog({
 
   const dispatch = useDispatch();
 
-
   const handleLoadToPos = (order: OrderResponse) => {
     dispatch(setPosSelectionType(POS_SELECTION_TYPE.EXISTING));
     dispatch(setSelectedOrders(order));
@@ -99,14 +111,20 @@ export function OrderStatusDialog({
   };
 
   const handlePrintBill = (order: OrderResponse) => {
- dispatch(setBillOrderData(order));
- dispatch(setIsPaymentSuccess(true));
+    dispatch(setBillOrderData(order));
+    dispatch(setIsPaymentSuccess(true));
   };
 
-
   return (
-    <Dialog open={open} onOpenChange={() => setOpen(false)}>
-      <DialogContent className="max-w-4xl w-11/12 h-[80vh]">
+    <Dialog
+      aria-describedby="order-status"
+      open={open}
+      onOpenChange={() => setOpen(false)}
+    >
+      <DialogContent
+        aria-describedby="order-status"
+        className="max-w-4xl w-11/12 h-[80vh]"
+      >
         <DialogHeader>
           <DialogTitle className="text-3xl font-bold text-center mb-4">
             Order Status
@@ -135,6 +153,11 @@ export function OrderStatusDialog({
                   ?.length === 0 && <NoOrdersToday type="complete" />}
                 {orders
                   ?.filter((order) => order.status === "complete")
+                  .sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                  )
                   .map((order) => (
                     <OrderCard
                       key={order.id}
@@ -151,7 +174,12 @@ export function OrderStatusDialog({
                   ?.length === 0 && <NoOrdersToday type="pending" />}
                 {orders
                   ?.filter((order) => order.status === "pending")
-                  ?.map((order) => (
+                  ?.sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                  )
+                  .map((order) => (
                     <OrderCard
                       key={order.id}
                       order={order}
@@ -165,12 +193,12 @@ export function OrderStatusDialog({
               <AnimatePresence>
                 {orders?.filter((order) => order.status === "rejected")
                   ?.length === 0 && (
-                    <div className="h-full flex items-center justify-center">
-                      <h2 className="text-xl">
-                        No orders have been rejected today!
-                      </h2>
-                    </div>
-                  )}
+                  <div className="h-full flex items-center justify-center">
+                    <h2 className="text-xl">
+                      No orders have been rejected today!
+                    </h2>
+                  </div>
+                )}
                 {orders
                   ?.filter((order) => order.status === "rejected")
                   ?.map((order) => (

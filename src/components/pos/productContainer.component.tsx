@@ -87,7 +87,7 @@ const ProductContainer = ({
       />
       {/* product list */}
       {isFetching && <p>Loading</p>}
-      <div className=" mt-2  p-1 h-[90vh] overflow-scroll">
+      <div className=" mt-2 p-1 h-[90vh] overflow-scroll">
         <ProductGrid filteredProducts={filteredProducts} />
       </div>
     </div>

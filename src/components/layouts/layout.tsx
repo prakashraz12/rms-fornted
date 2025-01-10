@@ -9,6 +9,7 @@ export const MainLayout = () => {
   const handleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
   return (
     <main className="w-full h-screen flex flex-col overflow-scroll">
       <HeaderLayout />

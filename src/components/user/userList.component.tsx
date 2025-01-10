@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,95 +10,40 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Edit2, Lock } from "lucide-react";
-
-type UserType = "POS USER" | "KITCHEN" | "ACCOUNT" | "MANAGER" | "OWNER";
+import { useGetUserQuery } from "@/services/api/user.api";
+import { Role } from "@/enums/role.enums";
 
 interface User {
   id: string;
-  fullName: string;
+  name: string;
   loginCode: string;
-  avatar: string;
+  image: string;
   email: string;
-  userType: UserType;
-  isBlocked: boolean;
+  role: Role;
+  isActive: boolean;
+  profileImage: {
+    url: string;
+    publicId: string;
+  };
 }
 
-const users: User[] = [
-  {
-    id: "1",
-    fullName: "John Doe",
-    loginCode: "JD001",
-    avatar: "/avatars/john-doe.png",
-    email: "john@example.com",
-    userType: "POS USER",
-    isBlocked: false,
-  },
-  {
-    id: "2",
-    fullName: "Jane Smith",
-    loginCode: "JS002",
-    avatar: "/avatars/jane-smith.png",
-    email: "jane@example.com",
-    userType: "KITCHEN",
-    isBlocked: false,
-  },
-  {
-    id: "3",
-    fullName: "Bob Johnson",
-    loginCode: "BJ003",
-    avatar: "/avatars/bob-johnson.png",
-    email: "bob@example.com",
-    userType: "ACCOUNT",
-    isBlocked: true,
-  },
-  {
-    id: "4",
-    fullName: "Alice Brown",
-    loginCode: "AB004",
-    avatar: "/avatars/alice-brown.png",
-    email: "alice@example.com",
-    userType: "MANAGER",
-    isBlocked: false,
-  },
-  {
-    id: "5",
-    fullName: "Charlie Wilson",
-    loginCode: "CW005",
-    avatar: "/avatars/charlie-wilson.png",
-    email: "charlie@example.com",
-    userType: "OWNER",
-    isBlocked: false,
-  },
-];
-
 export default function UserTable() {
-  const [userList, setUserList] = useState<User[]>(users);
+  const { data, isLoading, isError, error } = useGetUserQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
   const handleEdit = (userId: string) => {
     // Implement edit functionality
     console.log("Edit user:", userId);
   };
 
-  const handleToggleBlock = (userId: string) => {
-    setUserList((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id === userId ? { ...user, isBlocked: !user.isBlocked } : user
-      )
-    );
-  };
-
-  const getUserTypeColor = (userType: UserType): string => {
+  const getUserTypeColor = (userType: Role): string => {
     switch (userType) {
-      case "POS USER":
+      case Role.WAITER:
         return "bg-blue-500";
-      case "KITCHEN":
+      case Role.KITCHEN_STAFF:
         return "bg-green-500";
-      case "ACCOUNT":
-        return "bg-yellow-500";
-      case "MANAGER":
-        return "bg-purple-500";
-      case "OWNER":
-        return "bg-red-500";
+      case Role.POS_USER:
       default:
         return "bg-gray-500";
     }
@@ -112,7 +56,6 @@ export default function UserTable() {
           <TableRow>
             <TableHead className="w-[100px]">ID</TableHead>
             <TableHead>Full Name</TableHead>
-            <TableHead>Login Code</TableHead>
             <TableHead>Avatar</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>User Type</TableHead>
@@ -120,16 +63,15 @@ export default function UserTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {userList.map((user) => (
+          {data?.data?.map((user: User) => (
             <TableRow key={user.id}>
               <TableCell className="font-medium">{user.id}</TableCell>
-              <TableCell>{user.fullName}</TableCell>
-              <TableCell>{user.loginCode}</TableCell>
+              <TableCell>{user.name}</TableCell>
               <TableCell>
                 <Avatar>
-                  <AvatarImage src={user.avatar} alt={user.fullName} />
+                  <AvatarImage src={user.profileImage?.url} alt={user.name} />
                   <AvatarFallback>
-                    {user.fullName
+                    {user?.name
                       .split(" ")
                       .map((n) => n[0])
                       .join("")
@@ -139,10 +81,8 @@ export default function UserTable() {
               </TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>
-                <Badge
-                  className={`${getUserTypeColor(user.userType)} text-white`}
-                >
-                  {user.userType}
+                <Badge className={`${getUserTypeColor(user.role)} text-white`}>
+                  {user.role}
                 </Badge>
               </TableCell>
               <TableCell className="text-right">
@@ -152,13 +92,6 @@ export default function UserTable() {
                   onClick={() => handleEdit(user.id)}
                 >
                   <Edit2 className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant={user.isBlocked ? "destructive" : "ghost"}
-                  size="icon"
-                  onClick={() => handleToggleBlock(user.id)}
-                >
-                  <Lock className="h-4 w-4" />
                 </Button>
               </TableCell>
             </TableRow>

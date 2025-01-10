@@ -156,12 +156,14 @@ export default function ProductTable() {
                     <Checkbox />
                   </TableCell>
                   <TableCell>
-                    <Avatar>
+                    <Avatar className="h-10 w-10 rounded-lg">
                       <AvatarImage
                         src={product?.image?.url}
                         alt="product-image"
                       />
-                      <AvatarFallback>{product?.name[0] || ""}</AvatarFallback>
+                      <AvatarFallback className="rounded-lg font-medium">
+                        {product?.name[0] || ""}
+                      </AvatarFallback>
                     </Avatar>
                   </TableCell>
                   <TableCell className="font-medium">{product.name}</TableCell>

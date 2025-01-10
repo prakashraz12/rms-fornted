@@ -5,5 +5,5 @@ export interface SelectedPosProductType {
   name: string;
   variantId?: number;
   variantName?: string;
-  isVariant?:boolean
+  isVariant?: boolean;
 }

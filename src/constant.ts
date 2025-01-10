@@ -5,10 +5,12 @@ import {
   LayoutDashboard,
   Settings,
   Users,
+  UsersIcon,
+  UtensilsCrossed,
 } from "lucide-react";
 import logo from "./assets/icons/logo.png";
 import noImage from "./assets/icons/no-image.png";
-import mp3 from "./assets/sound/bell.mp3"
+import mp3 from "./assets/sound/bell.mp3";
 import { Banknote, CreditCard, Landmark, FileCheck } from "lucide-react";
 
 //main color
@@ -27,8 +29,11 @@ export const TEXT_COLOR_DARK = "#000000";
 export const MENU_ITEMS = [
   { icon: LayoutDashboard, label: "Dashboard", link: "/" },
   { icon: Users, label: "Roles & Users", link: "/roles&users" },
-  { icon: Armchair, label: "Floors", link: "/floor" },
   { icon: FileText, label: "Reports", link: "/reports" },
+  { icon: Armchair, label: "Floors", link: "/floor" },
+  { icon: Users, label: "Bills", link: "/bills" },
+  { icon: UtensilsCrossed, label: "Orders", link: "/orders" },
+  { icon: UsersIcon, label: "Customers", link: "/customers" },
   { icon: Barcode, label: "Products", link: "/products" },
   { icon: Settings, label: "Settings", link: "/settings" },
 ];
@@ -66,7 +71,7 @@ export const COMPANY_NAME = "ForkFlow";
 
 export const NO_IMAGE = noImage;
 
-export const BELL_SOUND = mp3
+export const BELL_SOUND = mp3;
 
 //user types
 export const USER_TYPES = [

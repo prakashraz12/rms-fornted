@@ -22,7 +22,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { LOGO_IMAGE } from "@/constant";
 import { useAdminLoginMutation } from "@/services/api/auth.api";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required("Username is required"),
@@ -49,7 +48,7 @@ export default function LoginPage() {
   const formik = useFormik({
     initialValues: {
       email: "edigitalclass@gmail.com",
-      password: "jjj1d55ubij",
+      password: "0podpu7g1eiq",
       role: "",
       restaurantCode: "",
       rememberMe: false,
@@ -69,7 +68,6 @@ export default function LoginPage() {
   //   }
   // }, [isSuccessOnAdminLogin]);
 
-  console.log(adminLoginResponse, "admin");
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-md overflow-hidden p-6">

@@ -5,16 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useGetOrders = () => {
-
   const dispatch = useDispatch();
 
-  const orders = useSelector(
-    (state: RootState) => state.order.orders
-  );
+  const orders = useSelector((state: RootState) => state.order.orders);
 
-  const previousOrders = useSelector(
-    (state: RootState) => state.order.orders
-  )
+  const previousOrders = useSelector((state: RootState) => state.order.orders);
 
   const [page, setPage] = useState<number>(1);
   const [getOrders] = useLazyGetOrderByRestaurantIdQuery();
@@ -39,16 +34,15 @@ const useGetOrders = () => {
       startDate: startDateOffset,
       endDate: endDateOffset,
     });
-
   }, [page, setPage]);
 
   useEffect(() => {
     if (previousOrders.length === 0) {
       getTodayOrders();
     } else {
-      dispatch(setOrder(previousOrders))
+      dispatch(setOrder(previousOrders));
     }
-  }, [previousOrders]);
+  }, [previousOrders.length]);
 
   return {
     orders,

@@ -1,4 +1,13 @@
-import { applyDiscountOnOrder, setBillOrderData, setIsPaymentSuccess, setPosSelectionType, setSelectedOrders, setSelectedProducts, setSelectOrderType } from "@/features/pos/posSlice";
+import {
+  applyDiscountOnOrder,
+  setBillOrderData,
+  setIsPaymentSuccess,
+  setPosSelectionType,
+  setSelectedOrders,
+  setSelectedProducts,
+  setSelectOrderType,
+  setSelectPaymentMethod,
+} from "@/features/pos/posSlice";
 import { baseApiSlice } from "../baseApi";
 import { setOrder } from "@/features/order/orderSlice";
 import { OrderResponse } from "@/types/order.type";
@@ -17,11 +26,9 @@ const orderApi = baseApiSlice.injectEndpoints({
 
           const previousOrders = getState() as any;
 
-
           if (data?.data) {
             dispatch(setSelectedProducts([]));
             dispatch(setOrder([...previousOrders?.order?.orders, data?.data]));
-
           }
         } catch (err) {
           console.error("Create order failed:", err);
@@ -29,8 +36,8 @@ const orderApi = baseApiSlice.injectEndpoints({
       },
     }),
     getOrderByRestaurantId: builder.query({
-      query: ({ page, limit, startDate, endDate, restaurantId }) => ({
-        url: `/order?page=${page}&limit=${limit}&restaurantId=${restaurantId}&startDate=${startDate}&endDate=${endDate}`,
+      query: ({ page, limit, startDate, endDate, status, orderType }) => ({
+        url: `/order?page=${page}&limit=${limit}${startDate ? `&startDate=${startDate}` : ""}${endDate ? `&endDate=${endDate}` : ""}${status.length ? `&status=${status}` : ""}${orderType ? `&orderType=${orderType}` : ""}`,
         method: "GET",
       }),
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
@@ -58,12 +65,20 @@ const orderApi = baseApiSlice.injectEndpoints({
           if (data?.data) {
             dispatch(setBillOrderData(data?.data));
             dispatch(setIsPaymentSuccess(true));
-            dispatch(setOrder(previousOrders?.order?.orders?.map((i: OrderResponse) => i?.id === data?.data?.id ? { ...i, status: data?.data?.status } : i)));
+            dispatch(
+              setOrder(
+                previousOrders?.order?.orders?.map((i: OrderResponse) =>
+                  i?.id === data?.data?.id
+                    ? { ...i, status: data?.data?.status }
+                    : i
+                )
+              )
+            );
             dispatch(setSelectedProducts([]));
             dispatch(setPosSelectionType("NEW"));
             dispatch(setSelectedOrders(null));
-            dispatch(applyDiscountOnOrder(null))
-
+            dispatch(applyDiscountOnOrder(null));
+            dispatch(setSelectPaymentMethod(""));
           }
         } catch (err) {
           console.error("Complete order failed:", err);

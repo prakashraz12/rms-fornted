@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Fullscreen, Settings, ShoppingCart } from "lucide-react";
-import { OrderStatusDialog } from "./orders.component";
-import { CalculatorDialog } from "./calculator";
+import { OrderStatusDialog } from "./popups/orders.component";
+import { CalculatorDialog } from "./popups/calculatorPopup";
 import React from "react";
 
 interface HeaderProps {

@@ -4,10 +4,13 @@ import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
 import { NO_IMAGE } from "@/constant";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedOrders, setSelectedProducts } from "@/features/pos/posSlice";
+import {
+  setSelectedOrders,
+  setSelectedProducts,
+} from "@/features/pos/posSlice";
 import { RootState } from "@/types/redux.type";
 import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
-import { ProductVariantPopup } from "./productVarients";
+import { ProductVariantPopup } from "./popups/productVarients";
 import { useState } from "react";
 
 const ProductCard = ({ productItem }: { productItem: ProductType }) => {
@@ -36,7 +39,7 @@ const ProductCard = ({ productItem }: { productItem: ProductType }) => {
 
   const handleSelectProduct = () => {
     if (productItem.variants.length > 0) {
-      setIsProductVariantPopupOpen(true)
+      setIsProductVariantPopupOpen(true);
     } else {
       if (posSelectionType === POS_SELECTION_TYPE.EXISTING) {
         dispatch(
@@ -83,8 +86,7 @@ const ProductCard = ({ productItem }: { productItem: ProductType }) => {
     }
   };
 
-
-  const handleSelectVariant = (variant:any) => {
+  const handleSelectVariant = (variant: any) => {
     setIsProductVariantPopupOpen(false);
     if (posSelectionType === POS_SELECTION_TYPE.EXISTING) {
       dispatch(
@@ -97,9 +99,9 @@ const ProductCard = ({ productItem }: { productItem: ProductType }) => {
               name: productItem.name,
               quantity: 1,
               price: variant.price,
-              variantId:variant.id,
-              variantName:variant.name,
-              isVariant:true
+              variantId: variant.id,
+              variantName: variant.name,
+              isVariant: true,
             },
           ],
         })
@@ -113,21 +115,18 @@ const ProductCard = ({ productItem }: { productItem: ProductType }) => {
             name: productItem.name,
             price: variant.price,
             quantity: 1,
-            variantId:variant.id,
-            variantName:variant.name,
-            isVariant:true
+            variantId: variant.id,
+            variantName: variant.name,
+            isVariant: true,
           },
         ])
       );
     }
-  }
+  };
+
   return (
     <>
-      <Card
-        key={productItem.id}
-        className="overflow-hidden rounded-xl hover:shadow-lg transition-all duration-300"
-        onClick={handleSelectProduct}
-      >
+      <Card onClick={handleSelectProduct} className={cn("relative")}>
         <CardContent className="p-2 rounded-xl">
           <div className="h-[150px] mb-3 relative">
             <img
@@ -163,13 +162,15 @@ const ProductCard = ({ productItem }: { productItem: ProductType }) => {
           </div>
         </CardContent>
       </Card>
-      {productItem.isMultipleVariant && <ProductVariantPopup
-        variants={productItem.variants}
-        isOpen={isProductVariantPopupOpen}
-        onSelectVariant={handleSelectVariant}
-        onClose={() => setIsProductVariantPopupOpen(false)}
-        productName={productItem.name}
-      />}
+      {productItem.isMultipleVariant && (
+        <ProductVariantPopup
+          variants={productItem.variants}
+          isOpen={isProductVariantPopupOpen}
+          onSelectVariant={handleSelectVariant}
+          onClose={() => setIsProductVariantPopupOpen(false)}
+          productName={productItem.name}
+        />
+      )}
     </>
   );
 };

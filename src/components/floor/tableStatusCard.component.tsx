@@ -50,7 +50,7 @@ export function TableStatusCard({
   };
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm ">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span>Table {tableNumber}</span>

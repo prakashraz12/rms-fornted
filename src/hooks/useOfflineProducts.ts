@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { ProductType } from '@/types/product.type';
-import { POS_PRODUCT_KEYS } from '@/components/pos/keys/keys';
+import { useEffect, useState } from "react";
+import { ProductType } from "@/types/product.type";
+import { POS_PRODUCT_KEYS } from "@/components/pos/keys/keys";
 
 export const useOfflineProducts = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -12,12 +12,12 @@ export const useOfflineProducts = () => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
@@ -27,7 +27,7 @@ export const useOfflineProducts = () => {
     try {
       if (isOnline) {
         // Fetch from API when online
-        const response = await fetch('/api/products');
+        const response = await fetch("/api/products");
         const data = await response.json();
         setProducts(data);
         // Store in localStorage for offline use
@@ -40,7 +40,7 @@ export const useOfflineProducts = () => {
         }
       }
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
       // Fallback to localStorage on error
       const storedProducts = localStorage.getItem(POS_PRODUCT_KEYS);
       if (storedProducts) {
@@ -60,6 +60,6 @@ export const useOfflineProducts = () => {
     products,
     isFetching,
     isOnline,
-    refetchProducts: fetchProducts
+    refetchProducts: fetchProducts,
   };
 };

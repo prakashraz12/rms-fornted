@@ -13,17 +13,28 @@ import PosHeader from "./posHeader.component";
 import { RootState } from "@/types/redux.type";
 import { useDispatch, useSelector } from "react-redux";
 import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
-import { calculateTotal } from "@/utils/getGrandToatlAmount";
+
+import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { NumericInputPopup } from "./numberInput";
+import { setServiceChargeRate, setVatRate } from "@/features/pos/posSlice";
 
 const TableContainer = () => {
+  const serviceChargeRate = useSelector(
+    (state: RootState) => state.pos.serviceChargeRate
+  );
+
+  const [vatRateOpen, setVatRateOpen] = useState(false);
+  const [serviceChargeOpen, setServiceChargeOpen] = useState(false);
+
+  const vatRate = useSelector((state: RootState) => state.pos.vatRate);
+
   const posSelectionType = useSelector(
     (state: RootState) => state.pos.posSelectionType
   );
 
+  const discount = useSelector((state: RootState) => state.pos.discount);
 
-  const discount = useSelector(
-    (state: RootState) => state.pos.discount
-  );
   const paymentMethod = useSelector(
     (state: RootState) => state.pos.selectPaymentMethod
   );
@@ -33,25 +44,36 @@ const TableContainer = () => {
     (state: RootState) => state.pos.selectedOrders
   );
 
+  const calculatedDiscountAmount =
+    discount?.type === "PERCENTAGE"
+      ? parseInt(selectedOrders?.totalAmount) * (discount?.value / 100) || 0
+      : discount?.value || 0;
 
-  const calculatedGrandToatl = calculateTotal({
-    subTotal: selectedOrders?.totalAmount,
-    discount: discount,
-    serviceChargeRate: 0.15,
-    vatRate: 0.15,
-    taxRate: 0.15,
-    applyVat: true,
-  });
+  const calculateServiceCharge =
+    (selectedOrders?.totalAmount - calculatedDiscountAmount) *
+      (serviceChargeRate / 100) || 0;
 
-  const { grandTotal, serviceCharge, discountAmount, calculatedTax } =
-    calculatedGrandToatl;
+  const calculateVat =
+    (selectedOrders?.totalAmount -
+      calculatedDiscountAmount +
+      calculateServiceCharge) *
+      (vatRate / 100) || 0;
 
+  const grandTotal =
+    selectedOrders?.totalAmount -
+    calculatedDiscountAmount +
+    calculateServiceCharge +
+    calculateVat;
 
   return (
-    <div className="w-full h-screen ">
+    <div className={cn("w-full h-screen")}>
       {/* header */}
       <div className="w-full h-16 flex items-center ">
-        <PosHeader userName="Prakash Raz Shreshtha" userRole="POS User" email="rzprakash16@gmail.com" />
+        <PosHeader
+          userName="Prakash Raz Shreshtha"
+          userRole="POS User"
+          email="rzprakash16@gmail.com"
+        />
       </div>
       {/* main product list */}
       <div className="flex flex-col justify-start h-[calc(100vh-4rem)] ">
@@ -80,31 +102,71 @@ const TableContainer = () => {
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
-
-                <TableRow>
-                  <TableCell colSpan={2}>Service Charge 15%</TableCell>
-                  <TableCell className="text-right">
-                    Rs.{serviceCharge.toFixed(2)}
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-
                 {discount && (
                   <TableRow>
-                    <TableCell colSpan={2}>Discount: <span className="border-b-2 border-dashed border-gray-400">{discount?.name}</span></TableCell>
+                    <TableCell colSpan={2}>
+                      Discount:{" "}
+                      <span className="border-b-2 border-dashed border-gray-400">
+                        {discount?.name}
+                      </span>
+                    </TableCell>
                     <TableCell className="text-right font-bold">
-                      (- Rs.{discountAmount.toFixed(2)})
+                      (- Rs.{calculatedDiscountAmount?.toFixed(2)})
                     </TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 )}
 
                 <TableRow>
-                  <TableCell colSpan={2}>Tax 15%</TableCell>
-                  <TableCell className="text-right">
-                    Rs.{calculatedTax?.toFixed(2)}
+                  <TableCell colSpan={2}>
+                    Service Charge:{" "}
+                    <span
+                      onClick={() => setServiceChargeOpen(true)}
+                      className="border-b-2 border-dashed border-gray-400 cursor-pointer"
+                    >
+                      {serviceChargeRate?.toFixed(2)}%
+                    </span>
                   </TableCell>
-                  <TableCell></TableCell>
+                  <TableCell className="text-right">
+                    Rs.{calculateServiceCharge?.toFixed(2)}
+                  </TableCell>
+                  <TableCell>
+                    <NumericInputPopup
+                      isOpen={serviceChargeOpen}
+                      onClose={() => setServiceChargeOpen(false)}
+                      onSubmit={(value) => {
+                        dispatch(setServiceChargeRate(parseFloat(value)));
+                        setServiceChargeOpen(false);
+                      }}
+                      title="Enter Service Charge Rate"
+                    />
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    VAT:{" "}
+                    <span
+                      onClick={() => setVatRateOpen(true)}
+                      className="border-b-2 border-dashed border-gray-400 cursor-pointer"
+                    >
+                      {vatRate?.toFixed(2)}%
+                    </span>{" "}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    Rs.{calculateVat?.toFixed(2)}
+                  </TableCell>
+                  <TableCell>
+                    <NumericInputPopup
+                      isOpen={vatRateOpen}
+                      onClose={() => setVatRateOpen(false)}
+                      onSubmit={(value) => {
+                        dispatch(setVatRate(parseFloat(value)));
+                        setVatRateOpen(false);
+                      }}
+                      title="Enter VAT Rate"
+                    />
+                  </TableCell>
                 </TableRow>
 
                 <TableRow>
@@ -113,7 +175,7 @@ const TableContainer = () => {
                   </TableCell>
                   <TableCell className="text-right font-bold">
                     Rs.
-                    {grandTotal.toFixed(2)}
+                    {grandTotal?.toFixed(2)}
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>

@@ -3,13 +3,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 import { PAYMENT_METHODS } from "@/constant";
-import { PaymentMethod } from "@/enums/paymentMethod.enum";
 import { RootState } from "@/types/redux.type";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -31,12 +29,12 @@ export function PaymentSelector() {
       }
     >
       <DialogContent className="sm:max-w-[700px] p-0">
-        <DialogHeader className="p-8 text-center">
+        <DialogHeader className="p-4 text-center">
           <DialogTitle className="text-xl font-bold">
             Choose Your Payment Method
           </DialogTitle>
         </DialogHeader>
-        <div className="p-8 grid grid-cols-2 gap-6">
+        <div className="p-4 grid grid-cols-2 gap-6">
           {PAYMENT_METHODS.map((method) => (
             <motion.div
               key={method.value}

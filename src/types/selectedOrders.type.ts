@@ -5,5 +5,5 @@ export interface selectedOrdersType {
   price: number;
   variantId?: number;
   variantName?: string;
-  isVariant?:boolean
+  isVariant?: boolean;
 }
