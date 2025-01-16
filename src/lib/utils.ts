@@ -13,8 +13,13 @@ interface Row {
   [key: string]: any;
 }
 
-export const exportSelectedRowsToCSV = (rows: Row[], selectedRows: number[]) => {
-  const selectedData = rows.filter((row) => selectedRows.includes(parseInt(row.id)));
+export const exportSelectedRowsToCSV = (
+  rows: Row[],
+  selectedRows: number[]
+) => {
+  const selectedData = rows.filter((row) =>
+    selectedRows.includes(parseInt(row.id))
+  );
   const csv = Papa.unparse(selectedData);
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
@@ -34,8 +39,14 @@ type Column = {
   label: string;
 };
 
-export const exportSelectedRowsToPDF = (rows: Row[], columns: Column[], selectedRows: number[]) => {
-  const selectedRowsData = rows.filter((row) => selectedRows.includes(parseInt(row.id)));
+export const exportSelectedRowsToPDF = (
+  rows: Row[],
+  columns: Column[],
+  selectedRows: number[]
+) => {
+  const selectedRowsData = rows.filter((row) =>
+    selectedRows.includes(parseInt(row.id))
+  );
 
   const columnsData = columns.map((column) => ({
     header: column.label,
@@ -47,7 +58,9 @@ export const exportSelectedRowsToPDF = (rows: Row[], columns: Column[], selected
   const addTableToDoc = () => {
     doc.autoTable({
       head: [columnsData.map((column) => column.header)],
-      body: selectedRowsData.map((row) => columnsData.map((column) => row[column.dataKey])),
+      body: selectedRowsData.map((row) =>
+        columnsData.map((column) => row[column.dataKey])
+      ),
       startY: 90,
       theme: "grid",
       headStyles: {

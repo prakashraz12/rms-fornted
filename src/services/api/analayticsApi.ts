@@ -5,10 +5,11 @@ const analayticsApi = baseApiSlice.injectEndpoints({
     getAnalytics: builder.query({
       query: () => "/restaurant/daily",
     }),
-    getPopularItemsOfThisWeek: builder.query({
-      query: () => "/restaurant/popular-dishes-of-the-week",
+    getPopularItems: builder.query({
+      query: ({ startDate, endDate }) =>
+        `/restaurant/popular-dishes?startDate=${startDate}&endDate=${endDate}`,
     }),
   }),
 });
-export const { useGetAnalyticsQuery, useGetPopularItemsOfThisWeekQuery } =
+export const { useGetAnalyticsQuery, useLazyGetPopularItemsQuery } =
   analayticsApi;

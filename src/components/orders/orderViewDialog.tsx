@@ -1,8 +1,13 @@
-"use client"
-
-import * as React from "react"
-import { format } from "date-fns"
-import { Clock, DollarSign, MapPin, UtensilsCrossed, User, ClipboardList, TableIcon } from 'lucide-react'
+import * as React from "react";
+import { format } from "date-fns";
+import {
+  Clock,
+  MapPin,
+  UtensilsCrossed,
+  User,
+  ClipboardList,
+  TableIcon,
+} from "lucide-react";
 
 import {
   Dialog,
@@ -10,11 +15,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { ScrollArea } from "@/components/ui/scroll-area"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Table,
   TableBody,
@@ -22,28 +27,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { OrderResponse } from "@/types/order.type"
-
-interface OrderItem {
-  id: number
-  quantity: number
-  price: string
-  name: string
-  variantId: number | null
-  variantName: string | null
-}
+} from "@/components/ui/table";
+import { OrderResponse } from "@/types/order.type";
 
 interface Table {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
 
-
-
 interface OrderDialogProps {
-  order: OrderResponse
-  trigger?: React.ReactNode
+  order: OrderResponse;
+  trigger?: React.ReactNode;
 }
 
 export function OrderDialog({ order, trigger }: OrderDialogProps) {
@@ -51,13 +45,13 @@ export function OrderDialog({ order, trigger }: OrderDialogProps) {
     pending: "bg-yellow-500",
     completed: "bg-green-500",
     cancelled: "bg-red-500",
-  }
+  };
 
   const orderTypeLabels = {
     DINE_IN: "Dine In",
     DELIVERY: "Delivery",
     TAKEAWAY: "Take Away",
-  }
+  };
 
   return (
     <Dialog>
@@ -67,12 +61,14 @@ export function OrderDialog({ order, trigger }: OrderDialogProps) {
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-bold">Order Details</DialogTitle>
-            <Badge 
-              variant="secondary" 
-              className={`${statusColors[order.status as keyof typeof statusColors]} text-white`}
+            <DialogTitle className="text-2xl font-bold">
+              Order Details
+            </DialogTitle>
+            <Badge
+              variant="secondary"
+              className={`${statusColors[order?.status as keyof typeof statusColors]} text-white`}
             >
-              {order.status.toUpperCase()}
+              {order?.status?.toUpperCase()}
             </Badge>
           </div>
         </DialogHeader>
@@ -95,12 +91,16 @@ export function OrderDialog({ order, trigger }: OrderDialogProps) {
               </div>
               <div className="flex items-center text-sm">
                 <UtensilsCrossed className="mr-2 h-4 w-4" />
-                {orderTypeLabels[order.orderType as keyof typeof orderTypeLabels]}
+                {
+                  orderTypeLabels[
+                    order.orderType as keyof typeof orderTypeLabels
+                  ]
+                }
               </div>
               {order.orderType === "DINE_IN" && order.tables.length > 0 && (
                 <div className="flex items-center text-sm">
                   <TableIcon className="mr-2 h-4 w-4" />
-                  Tables: {order.tables.map(table => table.name).join(", ")}
+                  Tables: {order.tables.map((table) => table.name).join(", ")}
                 </div>
               )}
               {order.orderType === "DELIVERY" && order.deliveryAddress && (
@@ -132,22 +132,25 @@ export function OrderDialog({ order, trigger }: OrderDialogProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {order.orderItems.map((item) => (
+                {order?.orderItems?.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>
-                      {item.name}
-                      {item.variantName && (
+                      {item?.name}
+                      {item?.variantName && (
                         <span className="text-sm text-muted-foreground block">
-                          Variant: {item.variantName}
+                          Variant: {item?.variantName}
                         </span>
                       )}
                     </TableCell>
-                    <TableCell className="text-right">{item.quantity}</TableCell>
                     <TableCell className="text-right">
-                      Rs. {parseFloat(item.price).toFixed(2)}
+                      {item?.quantity}
                     </TableCell>
                     <TableCell className="text-right">
-                      Rs. {(parseFloat(item.price) * item.quantity).toFixed(2)}
+                      Rs. {parseFloat(item?.price).toFixed(2)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      Rs.{" "}
+                      {(parseFloat(item?.price) * item?.quantity).toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -163,22 +166,28 @@ export function OrderDialog({ order, trigger }: OrderDialogProps) {
               <span>Subtotal</span>
               <span>Rs. {parseFloat(order.totalAmount).toFixed(2)}</span>
             </div>
-            {order.orderType === "DELIVERY" && parseFloat(order.deliveryCharges) > 0 && (
-              <div className="flex justify-between text-sm">
-                <span>Delivery Charges</span>
-                <span>Rs. {parseFloat(order.deliveryCharges).toFixed(2)}</span>
-              </div>
-            )}
+            {order.orderType === "DELIVERY" &&
+              parseFloat(order.deliveryCharges) > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span>Delivery Charges</span>
+                  <span>
+                    Rs. {parseFloat(order.deliveryCharges).toFixed(2)}
+                  </span>
+                </div>
+              )}
             <div className="flex justify-between font-bold">
               <span>Total</span>
-              <span>Rs. {(
-                parseFloat(order.totalAmount) + 
-                parseFloat(order.deliveryCharges)
-              ).toFixed(2)}</span>
+              <span>
+                Rs.{" "}
+                {(
+                  parseFloat(order.totalAmount) +
+                  parseFloat(order.deliveryCharges)
+                ).toFixed(2)}
+              </span>
             </div>
           </div>
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

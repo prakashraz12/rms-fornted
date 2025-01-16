@@ -64,4 +64,6 @@ export const initialValues: ProductFormValues = {
   comboProducts: [],
   offerValidUntil: null,
   categoryId: "",
+  isSKUEnabled: true,
+  skuId:1,
 };

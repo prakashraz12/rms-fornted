@@ -5,7 +5,6 @@ import {
   setPosSelectionType,
   setSelectedOrders,
   setSelectedProducts,
-  setSelectOrderType,
   setSelectPaymentMethod,
 } from "@/features/pos/posSlice";
 import { baseApiSlice } from "../baseApi";
@@ -36,8 +35,19 @@ const orderApi = baseApiSlice.injectEndpoints({
       },
     }),
     getOrderByRestaurantId: builder.query({
-      query: ({ page, limit, startDate, endDate, status, orderType }) => ({
-        url: `/order?page=${page}&limit=${limit}${startDate ? `&startDate=${startDate}` : ""}${endDate ? `&endDate=${endDate}` : ""}${status.length ? `&status=${status}` : ""}${orderType ? `&orderType=${orderType}` : ""}`,
+      query: ({
+        page,
+        limit,
+        startDate,
+        endDate,
+        status,
+        orderType,
+        orderNumber,
+        minOrderAmount,
+        maxOrderAmount,
+        sortBy,
+      }) => ({
+        url: `/order?page=${page}&limit=${limit}${startDate ? `&startDate=${startDate}` : ""}${endDate ? `&endDate=${endDate}` : ""}${status?.length ? `&status=${status}` : ""}${orderType?.length ? `&orderType=${orderType}` : ""}${orderNumber ? `&orderNumber=${orderNumber}` : ""}${minOrderAmount ? `&minOrderAmount=${minOrderAmount}` : ""}${maxOrderAmount ? `&maxOrderAmount=${maxOrderAmount}` : ""}${sortBy ? `&sortBy=${sortBy}` : ""}`,
         method: "GET",
       }),
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
@@ -92,6 +102,12 @@ const orderApi = baseApiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    dailyOrderTypeMapping: builder.query({
+      query: () => ({
+        url: "/order/daily-order-mapping",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -101,4 +117,5 @@ export const {
   useLazyGetOrderByRestaurantIdQuery,
   useCompleteOrderMutation,
   useUpdateOrderMutation,
+  useDailyOrderTypeMappingQuery,
 } = orderApi;

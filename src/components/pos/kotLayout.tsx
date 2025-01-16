@@ -1,22 +1,35 @@
-import React from 'react'
-import { format } from 'date-fns'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Printer } from 'lucide-react'
+import React from "react";
+import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Printer } from "lucide-react";
 
 interface OrderItem {
-  name: string
-  quantity: number
-  remarks?: string
+  name: string;
+  quantity: number;
+  remarks?: string;
 }
 
 interface KOTProps {
-  orderNumber: string
-  orderType: string
-  items: OrderItem[]
-  date: Date
-  tableNumber?: string
+  orderNumber: string;
+  orderType: string;
+  items: OrderItem[];
+  date: Date;
+  tableNumber?: string;
 }
 
 export const KitchenOrderTicket: React.FC<KOTProps> = ({
@@ -24,21 +37,23 @@ export const KitchenOrderTicket: React.FC<KOTProps> = ({
   orderType,
   items,
   date,
-  tableNumber
+  tableNumber,
 }) => {
   const handlePrint = () => {
-    window.print()
-  }
+    window.print();
+  };
 
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Kitchen Order Ticket</CardTitle>
+        <CardTitle className="text-2xl font-bold">
+          Kitchen Order Ticket
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex justify-between text-sm">
           <span>Order #: {orderNumber}</span>
-          <span>{format(date, 'dd/MM/yyyy HH:mm')}</span>
+          <span>{format(date, "dd/MM/yyyy HH:mm")}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span>Type: {orderType}</span>
@@ -57,7 +72,7 @@ export const KitchenOrderTicket: React.FC<KOTProps> = ({
               <TableRow key={index}>
                 <TableCell className="font-medium">{item.name}</TableCell>
                 <TableCell className="text-right">{item.quantity}</TableCell>
-                <TableCell>{item.remarks || '-'}</TableCell>
+                <TableCell>{item.remarks || "-"}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -70,5 +85,5 @@ export const KitchenOrderTicket: React.FC<KOTProps> = ({
         </Button>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};

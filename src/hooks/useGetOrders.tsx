@@ -4,7 +4,7 @@ import { RootState } from "@/types/redux.type";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const useGetOrders = () => {
+const useGetOrders = (limit: number) => {
   const dispatch = useDispatch();
 
   const orders = useSelector((state: RootState) => state.order.orders);
@@ -28,8 +28,8 @@ const useGetOrders = () => {
 
   const getTodayOrders = useCallback(async () => {
     await getOrders({
-      page: 1,
-      limit: 100,
+      page: page,
+      limit: 10,
       restaurantId: 1,
       startDate: startDateOffset,
       endDate: endDateOffset,
@@ -37,7 +37,7 @@ const useGetOrders = () => {
   }, [page, setPage]);
 
   useEffect(() => {
-    if (previousOrders.length === 0) {
+    if (previousOrders?.length === 0) {
       getTodayOrders();
     } else {
       dispatch(setOrder(previousOrders));

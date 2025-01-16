@@ -1,7 +1,6 @@
 import { OrderItem } from "@/types/order.type";
 import React from "react";
 
-
 interface KOTLayoutProps {
   items: OrderItem[];
   kotNumber: string;
@@ -17,13 +16,11 @@ export function KOTLayout({
   tableNumber,
   orderType,
   createdAt,
-  remarks
+  remarks,
 }: KOTLayoutProps) {
-
-
   const handlePrint = () => {
-    window.print()
-  }
+    window.print();
+  };
 
   return (
     <div className=" p-4 max-w-[80mm] mx-auto text-[12px] leading-tight">
@@ -52,7 +49,6 @@ export function KOTLayout({
                 <td className="py-2">{item.name}</td>
                 <td className="text-center text-[14px]">{item.quantity}</td>
               </tr>
-
             </React.Fragment>
           ))}
         </tbody>

@@ -20,9 +20,9 @@ export interface OrderResponse {
   updatedAt: string;
   orderItems: OrderItem[];
   tables: Table[];
-  restaurant:{
-    restaurantName: string
-  }
+  restaurant: {
+    restaurantName: string;
+  };
 }
 
 export interface OrderItem {
@@ -33,4 +33,7 @@ export interface OrderItem {
   productName: string;
   isComplete: boolean;
   product: ProductType;
+  variantName: string;
+  price: string;
+  remarks: string | null;
 }

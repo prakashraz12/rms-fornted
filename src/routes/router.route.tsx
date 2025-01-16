@@ -8,6 +8,7 @@ import CoustomerPage from "@/pages/customers.page";
 import DashBoard from "@/pages/dashboard.page";
 import KitchenBoard from "@/pages/digitalKOT.page";
 import FloorManagement from "@/pages/floorManagement.page";
+import InventoryPage from "@/pages/inventory.page";
 import OrdersPage from "@/pages/orders.page";
 import PosPage from "@/pages/POS.page";
 import Products from "@/pages/products.page";
@@ -15,6 +16,7 @@ import Reports from "@/pages/reports.page";
 import RestaurantProfilePage from "@/pages/restaurantProfile.page";
 import RolesAndUsers from "@/pages/roles&Users.page";
 import Settings from "@/pages/settings.page";
+import SKUPage from "@/pages/SKU.page";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -68,6 +70,14 @@ export const router = createBrowserRouter([
       {
         path: "/bills",
         element: <BillPage />,
+      },
+      {
+        path: "/SKU",
+        element: <SKUPage />,
+      },
+      {
+        path: "/inventory",
+        element: <InventoryPage />,
       },
     ],
   },
