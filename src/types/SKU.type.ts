@@ -1,8 +1,8 @@
 export interface SKU {
-    id:number,
-    skuCode:string,
-    category:string,
-    measuringUnit:string,
-    updatedAt:string,
-    createdAt:string
+  id: number;
+  skuCode: string;
+  category: string;
+  measuringUnit: string;
+  updatedAt: string;
+  createdAt: string;
 }

@@ -29,7 +29,7 @@ export function ProductVariantPopup({
           <DialogTitle>{productName} Variants</DialogTitle>
         </DialogHeader>
 
-        <div className=" flex gap-2">
+        <div className=" flex gap-2 w-full flex-wrap">
           {variants?.map((variant) => (
             <Button
               key={variant.id}

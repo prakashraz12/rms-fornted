@@ -10,8 +10,23 @@ const inventoryApi = baseApiSlice.injectEndpoints({
       }),
     }),
     getInventoryList: builder.query({
-      query: () => ({
-        url: `/inventory/get/all`,
+      query: ({
+        page,
+        limit,
+        startDate,
+        endDate,
+        status,
+        miniMumStock,
+        maximumStock,
+        productName,
+      }) => ({
+        url: `/inventory/get/all?page=${page}&limit=${limit}${startDate ? `&startDate=${startDate}` : ""}${
+          endDate ? `&endDate=${endDate}` : ""
+        }${status ? `&level=${status}` : ""}${
+          miniMumStock ? `&minimumStockLevel=${miniMumStock}` : ""
+        }${maximumStock ? `&maxStockLevel=${maximumStock}` : ""}${
+          productName ? `&productName=${productName}` : ""
+        }`,
         method: "GET",
       }),
     }),
@@ -19,4 +34,5 @@ const inventoryApi = baseApiSlice.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useCreateSkuMutation, useLazyGetInventoryListQuery } = inventoryApi;
+export const { useCreateSkuMutation, useLazyGetInventoryListQuery } =
+  inventoryApi;

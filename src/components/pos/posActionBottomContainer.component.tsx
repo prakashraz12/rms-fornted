@@ -73,7 +73,6 @@ const PosActionBottomContainer = () => {
     (state: RootState) => state.pos.posSelectionType
   );
 
-  console.log(discount);
 
   const handleCompleteOrder = async () => {
     if (paymentMethod) {

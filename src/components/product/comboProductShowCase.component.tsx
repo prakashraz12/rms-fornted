@@ -98,7 +98,7 @@ export const ComboProductList: React.FC<HorizontalCardListProps> = ({
       <Pagination>
         <PaginationContent>
           {products?.data?.meta?.currentPage !== 1 && (
-            <PaginationItem>
+            <PaginationItem className="cursor-pointer">
               <PaginationPrevious
                 onClick={() => {
                   setPage(page - 1);

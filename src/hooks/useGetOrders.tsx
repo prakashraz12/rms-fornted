@@ -4,7 +4,7 @@ import { RootState } from "@/types/redux.type";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const useGetOrders = (limit: number) => {
+const useGetOrders = () => {
   const dispatch = useDispatch();
 
   const orders = useSelector((state: RootState) => state.order.orders);

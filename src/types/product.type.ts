@@ -48,9 +48,13 @@ export interface ProductType {
   isMultipleVariant: boolean;
   category: Category;
   offerPrice: number;
+  isOffer: boolean;
+  createdAt: Date;
+  updatedAt: Date;
   offerValidUntil: Date | null;
   comboItems: SelectedProductTypes[];
   variants: ProductVariant[];
+  isInventoryManagementEnabled: boolean;
 }
 
 export const initialValues: ProductFormValues = {
@@ -64,6 +68,4 @@ export const initialValues: ProductFormValues = {
   comboProducts: [],
   offerValidUntil: null,
   categoryId: "",
-  isSKUEnabled: true,
-  skuId:1,
 };

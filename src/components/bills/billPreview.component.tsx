@@ -1,2 +1,3 @@
-const BillPreview = ({ bill }) => {
-    return <div>{bill}</div>;
+const BillPreview = () => {
+  return <div></div>;
+};

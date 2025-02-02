@@ -1,9 +1,13 @@
 import MainLayout from "@/components/layouts/layout";
 import { ProductCreationForm } from "@/components/product/createProduct.component";
+import PurchaseCreatePage from "@/components/purchuses-history/createPurchuses.component";
+import PurchusesHistory from "@/components/purchuses-history/purchusesHistory";
+import MyReports from "@/components/report/reports";
 import { Role } from "@/enums/role.enums";
 import AuthorizationLayout from "@/layouts/authorizationLayout";
 import AuthPage from "@/pages/auth.page";
 import BillPage from "@/pages/bill.page";
+import CategoryTable from "@/pages/category.page";
 import CoustomerPage from "@/pages/customers.page";
 import DashBoard from "@/pages/dashboard.page";
 import KitchenBoard from "@/pages/digitalKOT.page";
@@ -11,12 +15,11 @@ import FloorManagement from "@/pages/floorManagement.page";
 import InventoryPage from "@/pages/inventory.page";
 import OrdersPage from "@/pages/orders.page";
 import PosPage from "@/pages/POS.page";
+import ProductEditPage from "@/pages/productEditPage";
 import Products from "@/pages/products.page";
-import Reports from "@/pages/reports.page";
 import RestaurantProfilePage from "@/pages/restaurantProfile.page";
 import RolesAndUsers from "@/pages/roles&Users.page";
 import Settings from "@/pages/settings.page";
-import SKUPage from "@/pages/SKU.page";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -45,7 +48,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/reports",
-        element: <Reports />,
+        element: <MyReports />,
       },
       {
         path: "/products",
@@ -54,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: "/product/create",
         element: <ProductCreationForm />,
+      },
+      {
+        path: "/product/edit/:id",
+        element: <ProductEditPage />,
       },
       {
         path: "/settings",
@@ -72,12 +79,20 @@ export const router = createBrowserRouter([
         element: <BillPage />,
       },
       {
-        path: "/SKU",
-        element: <SKUPage />,
-      },
-      {
         path: "/inventory",
         element: <InventoryPage />,
+      },
+      {
+        path: "/purchases",
+        element: <PurchusesHistory />,
+      },
+      {
+        path: "/purchases/create",
+        element: <PurchaseCreatePage />,
+      },
+      {
+        path: "/products/categories",
+        element: <CategoryTable />,
       },
     ],
   },

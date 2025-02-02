@@ -6,7 +6,7 @@ import {
   FileText,
   LayoutDashboard,
   Newspaper,
-  ScanLine,
+  ShoppingCart,
   Settings,
   Users,
   UsersIcon,
@@ -29,20 +29,81 @@ export const SECONDARY_COLOR_DARK = "#E9880F";
 export const TEXT_COLOR = "#193648";
 export const TEXT_COLOR_DARK = "#000000";
 
+// Menu item types
+interface SubMenuItem {
+  label: string;
+  link: string;
+}
+
+interface BaseMenuItem {
+  icon: any; // Using 'any' for Lucide icons, you can make this more specific if needed
+  label: string;
+  link: string;
+}
+
+interface MenuItemWithSubItems extends BaseMenuItem {
+  subItems: SubMenuItem[];
+}
+
+type MenuItem = BaseMenuItem | MenuItemWithSubItems;
+
+interface MenuCategory {
+  category: string;
+  items: MenuItem[];
+}
+
 //menu items
-export const MENU_ITEMS = [
-  { icon: LayoutDashboard, label: "Dashboard", link: "/" },
-  { icon: Calculator, label: "POS", link: "/pos" },
-  { icon: Armchair, label: "Floors", link: "/floor" },
-  { icon: Newspaper, label: "Bills", link: "/bills" },
-  { icon: ScanLine, label: "SKU", link: "/sku" },
-  { icon: Barcode, label: "Products", link: "/products" },
-  { icon: Archive, label: "Inventory", link: "/inventory" },
-  { icon: FileText, label: "Reports", link: "/reports" },
-  { icon: Users, label: "Roles & Users", link: "/roles&users" },
-  { icon: UtensilsCrossed, label: "Orders", link: "/orders" },
-  { icon: UsersIcon, label: "Customers", link: "/customers" },
-  { icon: Settings, label: "Settings", link: "/settings" },
+export const MENU_ITEMS: MenuCategory[] = [
+  {
+    category: "Main",
+    items: [
+      { icon: LayoutDashboard, label: "Dashboard", link: "/" },
+      { icon: Calculator, label: "POS", link: "/pos" },
+      { icon: UtensilsCrossed, label: "Orders", link: "/orders" },
+    ],
+  },
+  {
+    category: "Management",
+    items: [
+      {
+        icon: Barcode,
+        label: "Products",
+        link: "/products",
+        subItems: [
+          { label: "All Products", link: "/products" },
+          { label: "Categories", link: "/products/categories" },
+          { label: "Add Product", link: "/product/create" },
+        ],
+      },
+      {
+        icon: Archive,
+        label: "Inventory",
+        link: "/inventory",
+
+      },
+      {
+        icon: ShoppingCart,
+        label: "Purchases",
+        link: "/purchases",
+      },
+    ],
+  },
+  {
+    category: "Sales",
+    items: [
+      { icon: Newspaper, label: "Bills", link: "/bills" },
+      { icon: FileText, label: "Reports", link: "/reports" },
+      { icon: UsersIcon, label: "Customers", link: "/customers" },
+    ],
+  },
+  {
+    category: "Administration",
+    items: [
+      { icon: Armchair, label: "Floors", link: "/floor" },
+      { icon: Users, label: "Roles & Users", link: "/roles&users" },
+      { icon: Settings, label: "Settings", link: "/settings" },
+    ],
+  },
 ];
 
 export const PAYMENT_METHODS: { label: string; value: string; icon: any }[] = [

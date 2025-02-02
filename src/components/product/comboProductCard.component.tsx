@@ -62,11 +62,11 @@ const ComboProductCard = ({
         <p className="text-sm text-gray-500 mb-2">Rs.{product.price}</p>
         {selectedProduct && (
           <div className="flex items-center gap-3">
-            <Button type="button" size={"icon"} onClick={handleDecrement}>
+            <Button type="button" size={"sm"} onClick={handleDecrement}>
               <Minus />
             </Button>
-            <p>{selectedProduct.quantity}</p>
-            <Button type="button" size={"icon"} onClick={handleIncrement}>
+            <p className="text-sm">{selectedProduct.quantity}</p>
+            <Button type="button" size={"sm"} onClick={handleIncrement}>
               <Plus />
             </Button>
           </div>

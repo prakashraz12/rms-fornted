@@ -16,7 +16,7 @@ const OrderTypeSelectionPopUp = () => {
         dispatch({ type: "pos/setIsOderSelctorOpen", payload: false });
       }}
     >
-      <DialogContent className="w-[95%] md:w-[80%] lg:w-[70%] xl:w-[60%] max-w-[900px] p-2 md:p-4 shadow-none border-none overflow-y-auto max-h-[90vh]">
+      <DialogContent className="w-[95%] md:w-[80%] lg:w-[60%] xl:w-[60%] max-w-[700px] p-2 md:p-4 shadow-none border-none overflow-y-auto max-h-[90vh]">
         <OrderTypeSelector />
         <DialogFooter className="mt-4 p-2 md:p-4 flex items-center">
           <Button

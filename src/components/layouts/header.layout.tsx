@@ -1,4 +1,4 @@
-import { Bell, Search, Settings, LogOut } from "lucide-react";
+import { Bell, Search, Settings, LogOut, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,18 +13,26 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { COMPANY_NAME, LOGO_IMAGE } from "@/constant";
 import ThemeSwitcherComponent from "../theme/ThemeSwitcher.component";
 
-export default function HeaderLayout() {
+interface HeaderLayoutProps {
+  collapsed: boolean;
+  setCollapsed: (collapsed: boolean) => void;
+}
+
+export default function HeaderLayout({
+  collapsed,
+  setCollapsed,
+}: HeaderLayoutProps) {
   return (
     <nav className="border-b bg-background dark:bg-black w-full sticky top-0 z-50 max-h-20">
-      <div className=" flex h-16 items-center px-4">
-        <div className="flex items-center space-x-4">
-          <img
-            src={LOGO_IMAGE}
-            alt="logo-image"
-            className="md:w-[55px] md:h-[55px] object-contain w-[40px] h-[40px]"
-          />
-          <h1 className="text-xl coiny logo-color">{COMPANY_NAME}</h1>
-        </div>
+      <div className="flex h-16 items-center px-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setCollapsed(!collapsed)}
+          className="mr-4"
+        >
+          <Menu className="h-6 w-6" />
+        </Button>
         <div className="ml-auto flex items-center space-x-4">
           <form className="hidden md:block">
             <div className="relative">

@@ -4,6 +4,8 @@ import { Fullscreen, Settings, ShoppingCart } from "lucide-react";
 import { OrderStatusDialog } from "./popups/orders.component";
 import { CalculatorDialog } from "./popups/calculatorPopup";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/types/redux.type";
 
 interface HeaderProps {
   userName: string;
@@ -18,6 +20,7 @@ export default function PosHeader({
   email = "rzprakash16@gmail.com",
   avatarUrl,
 }: HeaderProps) {
+  // const user = useSelector((state: RootState) => );
   const [orderDailogOpen, setOrderDailogOpen] = React.useState(false);
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {

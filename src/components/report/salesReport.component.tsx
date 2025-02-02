@@ -20,7 +20,7 @@ const data = [
   { day: "Sun", sales: 3490 },
 ];
 
-export function SalesChart() {
+export function SalesReport() {
   return (
     <Card className="w-full">
       <CardHeader>
