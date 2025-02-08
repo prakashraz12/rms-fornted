@@ -20,6 +20,9 @@ import { NumericInputPopup } from "./numberInput";
 import { setServiceChargeRate, setVatRate } from "@/features/pos/posSlice";
 
 const TableContainer = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const role = useSelector((state: RootState) => state.auth.role);
+
   const serviceChargeRate = useSelector(
     (state: RootState) => state.pos.serviceChargeRate
   );
@@ -70,9 +73,10 @@ const TableContainer = () => {
       {/* header */}
       <div className="w-full h-16 flex items-center ">
         <PosHeader
-          userName="Prakash Raz Shreshtha"
-          userRole="POS User"
-          email="rzprakash16@gmail.com"
+          userName={user?.name || ""}
+          userRole={role || ""}
+          email={user?.email || ""}
+          avatarUrl={user?.profileImage?.url || ""}
         />
       </div>
       {/* main product list */}

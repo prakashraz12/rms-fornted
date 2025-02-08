@@ -1,6 +1,6 @@
 import { BACKEND_URL } from "@/config";
 import { clearAuthState } from "@/features/auth/authSlice";
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "@/keys";
+import { ACCESS_TOKEN_KEY } from "@/keys";
 import {
   createApi,
   FetchArgs,
@@ -22,16 +22,9 @@ const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
   baseUrl: BACKEND_URL,
-  prepareHeaders: (headers) => {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-    if (accessToken) {
-      headers.set("Authorization", `Bearer ${accessToken}`);
-    }
-    return headers;
-  },
+  credentials: "include",
 });
 
-// Annotate return type with BaseQueryFn
 const baseQueryWithReAuth: BaseQueryFn<
   string | FetchArgs,
   unknown,
@@ -39,7 +32,7 @@ const baseQueryWithReAuth: BaseQueryFn<
   {},
   FetchBaseQueryMeta
 > = async (args, api, extraOptions) => {
-  await mutex.waitForUnlock(); // Wait for any ongoing token refresh to complete
+  await mutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
@@ -47,9 +40,8 @@ const baseQueryWithReAuth: BaseQueryFn<
       const release = await mutex.acquire();
       try {
         const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-        const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
 
-        if (!accessToken || !refreshToken) {
+        if (!accessToken) {
           api.dispatch(clearAuthState());
           return result;
         }
@@ -58,9 +50,7 @@ const baseQueryWithReAuth: BaseQueryFn<
           {
             url: "/auth/refresh/token",
             method: "POST",
-            body: {
-              refreshToken,
-            },
+            credentials: "include",
           },
           api,
           extraOptions
@@ -70,34 +60,6 @@ const baseQueryWithReAuth: BaseQueryFn<
           refreshResult.data &&
           (refreshResult.data as RefreshTokenResponse).data?.accessToken
         ) {
-          const newAccessToken = (refreshResult.data as RefreshTokenResponse)
-            .data?.accessToken;
-
-          const newRefreshToken = (refreshResult?.data as RefreshTokenResponse)
-            ?.data?.refreshToken;
-
-          // // Save new access token to cookies
-          // Cookies.set(ACCESS_TOKEN_KEY, newAccessToken);
-
-          localStorage.setItem(ACCESS_TOKEN_KEY, newAccessToken);
-          localStorage.setItem(REFRESH_TOKEN_KEY, newRefreshToken);
-
-          // Update the headers dynamically with the new access token
-          args =
-            typeof args === "string"
-              ? {
-                  url: args,
-                  headers: { Authorization: `Bearer ${newAccessToken}` },
-                }
-              : {
-                  ...args,
-                  headers: {
-                    ...args.headers,
-                    Authorization: `Bearer ${newAccessToken}`,
-                  },
-                };
-
-          // Retry the original request with updated headers
           result = await baseQuery(args, api, extraOptions);
         } else {
           api.dispatch(clearAuthState());
@@ -105,10 +67,9 @@ const baseQueryWithReAuth: BaseQueryFn<
       } catch (error) {
         console.error("Error during token refresh:", error);
       } finally {
-        release(); // Ensure mutex is released
+        release();
       }
     } else {
-      // Wait for the ongoing refresh to complete and retry the original request
       await mutex.waitForUnlock();
       result = await baseQueryWithReAuth(args, api, extraOptions);
     }
@@ -121,5 +82,6 @@ export const baseApiSlice = createApi({
   reducerPath: "baseApi",
   tagTypes: [],
   baseQuery: baseQueryWithReAuth,
+
   endpoints: () => ({}),
 });

@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { Button } from '../ui/button';
-import { Checkbox } from '../ui/checkbox';
+import React, { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/table";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
 import useGetInventory from "@/hooks/useGetInventory";
@@ -10,12 +17,16 @@ interface ExistingInventoryTableProps {
   onSelectInventory?: (inventoryId: string) => void;
 }
 
-const ExistingInventoryTable: React.FC<ExistingInventoryTableProps> = ({ onSelectInventory }) => {
+const ExistingInventoryTable: React.FC<ExistingInventoryTableProps> = ({
+  onSelectInventory,
+}) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
   const { inventory } = useGetInventory({ page, limit, search });
-  const [selectedInventoryId, setSelectedInventoryId] = useState<string | null>(null);
+  const [selectedInventoryId, setSelectedInventoryId] = useState<string | null>(
+    null
+  );
 
   const handleInventorySelect = (inventoryId: string) => {
     setSelectedInventoryId(inventoryId);
@@ -50,8 +61,13 @@ const ExistingInventoryTable: React.FC<ExistingInventoryTableProps> = ({ onSelec
             <TableRow key={item.id}>
               <TableCell>
                 <Checkbox
-                  checked={selectedInventoryId !== null && parseInt(selectedInventoryId) === item.id}
-                  onCheckedChange={() => handleInventorySelect(item.id?.toString())}
+                  checked={
+                    selectedInventoryId !== null &&
+                    parseInt(selectedInventoryId) === item.id
+                  }
+                  onCheckedChange={() =>
+                    handleInventorySelect(item.id?.toString())
+                  }
                 />
               </TableCell>
               <TableCell>{item.productName}</TableCell>
@@ -62,7 +78,9 @@ const ExistingInventoryTable: React.FC<ExistingInventoryTableProps> = ({ onSelec
         </TableBody>
       </Table>
       {(!inventory || inventory.length === 0) && (
-        <p className="text-center text-sm text-gray-500 mt-4">No existing inventory found</p>
+        <p className="text-center text-sm text-gray-500 mt-4">
+          No existing inventory found
+        </p>
       )}
       <div className="flex justify-between">
         <Button type="button" onClick={() => page > 1 && setPage(page - 1)}>

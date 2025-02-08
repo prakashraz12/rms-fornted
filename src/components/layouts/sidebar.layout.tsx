@@ -87,7 +87,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ collapsed }) => {
                 <ul className="space-y-1 px-3">
                   {category.items.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      {('subItems' in item && item.subItems) ? (
+                      {"subItems" in item && item.subItems ? (
                         <div>
                           <Button
                             size={"lg"}

@@ -2,7 +2,7 @@ import { ProductType } from "@/types/product.type";
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
-import { NO_IMAGE } from "@/constant";
+import { PLATE_IMAGE } from "@/constant";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setSelectedOrders,
@@ -12,6 +12,13 @@ import { RootState } from "@/types/redux.type";
 import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
 import { ProductVariantPopup } from "./popups/productVarients";
 import { useState } from "react";
+
+const isOfferValid = (offerEndDate: Date): boolean => {
+  const currentDate = new Date();
+  const offerDate = new Date(offerEndDate);
+
+  return currentDate < offerDate;
+};
 
 const ProductCard = ({ productItem }: { productItem: ProductType }) => {
   const [isProductVariantPopupOpen, setIsProductVariantPopupOpen] =
@@ -126,14 +133,22 @@ const ProductCard = ({ productItem }: { productItem: ProductType }) => {
 
   return (
     <>
-      <Card onClick={handleSelectProduct} className={cn("relative")}>
+      <Card
+        onClick={handleSelectProduct}
+        className={cn(
+          "relative hover:cursor-pointer hover:shadow-xl transition-all ease-out duration-300"
+        )}
+      >
         <CardContent className="p-2 rounded-xl">
-          <div className="h-[150px] mb-3 relative">
+          <div className="h-[140px] mb-3 relative">
             <img
-              src={productItem.image?.url || ""}
-              onError={(e) => (e.currentTarget.src = NO_IMAGE)}
+              src={productItem.image?.url || PLATE_IMAGE}
+              onError={(e) => (e.currentTarget.src = PLATE_IMAGE)}
               alt={productItem.name}
-              className="object-cover rounded-xl h-full w-full "
+              className={cn(
+                "object-cover rounded-xl h-full w-full ",
+                !productItem?.image?.url && "opacity-30 object-contain"
+              )}
             />
             {isProductSelected() &&
               selectedProducts.find((item) => item.productId === productItem.id)
@@ -158,7 +173,19 @@ const ProductCard = ({ productItem }: { productItem: ProductType }) => {
             <Badge className="font-semibold" variant={"secondary"}>
               {productItem.category?.name}
             </Badge>
-            <p className="font-bold">Rs.{productItem.price}</p>
+            {!productItem?.isMultipleVariant &&
+            productItem?.isOffer &&
+            productItem?.offerValidUntil &&
+            isOfferValid(productItem?.offerValidUntil) ? (
+              <p className="font-semibold pl-2">
+                {productItem?.offerPrice}{" "}
+                <span className="text-muted-foreground line-through">
+                  Rs.{productItem?.price}
+                </span>
+              </p>
+            ) : (
+              <p className="font-semibold pl-2">Rs.{productItem?.price}</p>
+            )}
           </div>
         </CardContent>
       </Card>

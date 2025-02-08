@@ -73,7 +73,6 @@ const PosActionBottomContainer = () => {
     (state: RootState) => state.pos.posSelectionType
   );
 
-
   const handleCompleteOrder = async () => {
     if (paymentMethod) {
       await completeOrder({

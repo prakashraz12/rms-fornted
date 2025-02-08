@@ -27,14 +27,12 @@ export const productSchema = z
     minimumStockLevel: z.number().optional(),
     currentStockLevel: z.number().optional(),
     measurementUnit: z.enum(["kg", "ml", "pcs"]).optional(),
-    comboProducts: z
-      .array(
-        z.object({
-          productId: z.string().min(1, "Combo product is required"),
-          quantity: z.number().min(1, "Quantity must be at least 1"),
-        })
-      )
-      ,
+    comboProducts: z.array(
+      z.object({
+        productId: z.string().min(1, "Combo product is required"),
+        quantity: z.number().min(1, "Quantity must be at least 1"),
+      })
+    ),
   })
   .superRefine((data, ctx) => {
     if (data.hasOffer) {

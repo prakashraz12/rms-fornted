@@ -3,7 +3,8 @@ import { twMerge } from "tailwind-merge";
 import Papa from "papaparse";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-
+import CryptoJS from "crypto-js";
+import { roleEncryptKey } from "@/keys";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -77,4 +78,12 @@ export const exportSelectedRowsToPDF = (
   };
 
   addTableToDoc();
+};
+
+export const encryptData = (text: string) => {
+  return CryptoJS.AES.encrypt(text, roleEncryptKey).toString();
+};
+
+export const decryptData = (text: string) => {
+  return CryptoJS.AES.decrypt(text, roleEncryptKey).toString(CryptoJS.enc.Utf8);
 };

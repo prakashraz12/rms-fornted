@@ -1,32 +1,30 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginPage from "@/components/auth/loginForm.component";
-import useAuth from "@/hooks/useAuth";
 import { Role } from "@/enums/role.enums";
+import { useSelector } from "react-redux";
+import { RootState } from "@/types/redux.type";
 
 const AuthPage: React.FC = () => {
-  const { userLoggedIn, userInfo } = useAuth();
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const role = useSelector((state: RootState) => state.auth.role);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userLoggedIn) {
-      switch (userInfo?.role) {
-        case Role.ADMIN:
-          navigate("/", { replace: true });
-          break;
-        case Role.POS_USER:
-          navigate("/pos", { replace: true });
-          break;
-        case Role.KITCHEN_STAFF:
-          navigate("/kitchenboard", { replace: true });
-          break;
-        default:
-          navigate("/restaurant/portal/login", { replace: true });
-      }
-    }
-  }, [userLoggedIn, userInfo?.role, navigate]);
+    if (isAuthenticated && role) {
+      const roleRedirectMap = {
+        [Role.ADMIN]: "/",
+        [Role.POS_USER]: "/pos",
+        [Role.KITCHEN_STAFF]: "/kitchenboard",
+      };
 
-  if (userLoggedIn) return null;
+      navigate(roleRedirectMap[role] || "/restaurant/portal/login", {
+        replace: true,
+      });
+    }
+  }, [isAuthenticated, role, navigate]);
 
   return <LoginPage />;
 };

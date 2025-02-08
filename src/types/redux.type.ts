@@ -4,6 +4,7 @@ import { POS_SELECTION_TYPE } from "@/enums/posSelectionType.enum";
 import { OrderResponse } from "./order.type";
 import { OrderType } from "@/enums/orderType.enum";
 import { IDiscount } from "./discount.type";
+import { Role } from "@/enums/role.enums";
 
 interface BaseApi {
   queries: {
@@ -44,6 +45,23 @@ interface BaseApi {
 
 export interface RootState {
   baseApi: BaseApi;
+  auth: {
+    isLoading: boolean;
+    user: {
+      name: string;
+      email: string;
+      id: string;
+      restaurantCode: string;
+      profileImage: {
+        url: string;
+        publicId: string;
+      };
+    } | null;
+    role: Role.ADMIN | Role.KITCHEN_STAFF | Role.POS_USER | null;
+    isAuthenticated: boolean;
+    restaurantInfo: any;
+    isRememberMe: boolean;
+  };
   pos: {
     selectedOrders: any;
     seletedProducts: SelectedPosProductType[];

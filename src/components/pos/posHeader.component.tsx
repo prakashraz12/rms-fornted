@@ -4,8 +4,7 @@ import { Fullscreen, Settings, ShoppingCart } from "lucide-react";
 import { OrderStatusDialog } from "./popups/orders.component";
 import { CalculatorDialog } from "./popups/calculatorPopup";
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/types/redux.type";
+import ProfileDialog from "./POSUserProfile";
 
 interface HeaderProps {
   userName: string;
@@ -15,12 +14,12 @@ interface HeaderProps {
 }
 
 export default function PosHeader({
-  userName = "Prakash Raz Shreshtha",
-  userRole = "POS User",
-  email = "rzprakash16@gmail.com",
+  userName,
+  userRole,
+  email,
   avatarUrl,
 }: HeaderProps) {
-  // const user = useSelector((state: RootState) => );
+  const [isProfileOpen, setIsProfileOpen] = React.useState(false);
   const [orderDailogOpen, setOrderDailogOpen] = React.useState(false);
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -43,10 +42,12 @@ export default function PosHeader({
       <div className="flex items-center gap-3">
         <Avatar className="h-10 w-10">
           <AvatarImage src={avatarUrl} alt={userName} />
-          <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
+          <AvatarFallback>{userName?.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <span className="font-semibold text-sm">{userName}</span>
+          <span className="font-semibold text-sm">
+            {userName}, {userRole}
+          </span>
           <span className="text-xs text-muted-foreground">{email}</span>
         </div>
       </div>
@@ -63,6 +64,7 @@ export default function PosHeader({
           <Fullscreen className="h-5 w-5 text-purple-600" />
         </Button>
         <Button
+        onClick={() => setIsProfileOpen(true)}
           variant="ghost"
           size="icon"
           className="h-10 w-10 bg-blue-100 hover:bg-blue-200"
@@ -81,6 +83,7 @@ export default function PosHeader({
           setOpen={setOrderDailogOpen}
         />
       </div>
+      <ProfileDialog isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} initialData={{ name: userName, email, avatarUrl:"" }} />
     </div>
   );
 }

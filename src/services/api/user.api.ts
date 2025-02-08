@@ -5,7 +5,21 @@ const userApi = baseApiSlice.injectEndpoints({
     getUser: builder.query({
       query: () => "/user/restaurant/staffs",
     }),
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: "/user/update",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: "/user/change-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserQuery } = userApi;
+export const { useGetUserQuery, useUpdateProfileMutation, useChangePasswordMutation } = userApi;

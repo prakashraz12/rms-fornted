@@ -1,6 +1,7 @@
 import { Role } from "@/enums/role.enums";
-import useAuth from "@/hooks/useAuth";
-import React, { useLayoutEffect, useState } from "react";
+import { RootState } from "@/types/redux.type";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const AuthorizationLayout = ({
@@ -10,31 +11,43 @@ const AuthorizationLayout = ({
   children: React.ReactNode;
   requiredRoles: Role[];
 }) => {
-  const { userInfo } = useAuth();
-
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const role = useSelector((state: RootState) => state.auth.role);
+  const user = useSelector((state: RootState) => state.auth.user);
   const navigate = useNavigate();
-  const { userLoggedIn } = useAuth();
-  const [isAuthorized, setIsAuthorized] = useState(false);
 
-  useLayoutEffect(() => {
-    if (!userLoggedIn) {
-      navigate("/restaurant/portal/login");
+  useEffect(() => {
+    console.log("AuthorizationLayout - Authentication Check:", {
+      isAuthenticated,
+      role,
+      requiredRoles,
+      user,
+    });
+
+    if (!isAuthenticated) {
+      console.log("Not authenticated, redirecting to login");
+      navigate("/restaurant/portal/login", { replace: true });
       return;
     }
 
-    if (userInfo === null || !userInfo?.role) {
-      navigate("/unauthorized");
+    if (!role) {
+      console.log("No role found, redirecting to login");
+      navigate("/restaurant/portal/login", { replace: true });
       return;
     }
 
-    if (!requiredRoles?.includes(userInfo?.role)) {
-      navigate("/unauthorized");
-      return;
+    if (!requiredRoles.includes(role)) {
+      console.log("Role not in required roles, redirecting to unauthorized");
+      navigate("/unauthorized", { replace: true });
     }
-    setIsAuthorized(true);
-  }, [userLoggedIn, userInfo?.role, requiredRoles, navigate]);
+  }, [isAuthenticated, role, requiredRoles, navigate]);
 
-  if (!isAuthorized) return null;
+  if (!isAuthenticated || !role || !requiredRoles.includes(role)) {
+    console.log("Rendering null due to authentication/role check");
+    return null;
+  }
 
   return <>{children}</>;
 };

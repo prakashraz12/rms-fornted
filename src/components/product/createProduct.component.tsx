@@ -147,7 +147,7 @@ export const ProductCreationForm: React.FC = () => {
   const watchIsCombo = watch("isCombo");
   const watchInventoryManagement = watch("isInventoryManagementEnabled");
 
-  console.log(errors)
+  console.log(errors);
 
   return (
     <div className="container mx-auto mt-6">
@@ -385,9 +385,9 @@ export const ProductCreationForm: React.FC = () => {
                     selectedProducts={
                       field.value
                         ? field.value.map((item) => ({
-                          productId: Number(item.productId),
-                          quantity: item.quantity,
-                        }))
+                            productId: Number(item.productId),
+                            quantity: item.quantity,
+                          }))
                         : []
                     }
                     setSelectedProducts={field.onChange}
@@ -414,15 +414,28 @@ export const ProductCreationForm: React.FC = () => {
             </div>
 
             {watchInventoryManagement && (
-
               <>
                 <div className="flex  space-x-2">
-                  <Button type="button" variant={inventoryType === "ex" ? "default" : "outline"} className="rounded-none w-full" onClick={() => setInventoryType("ex")}>Apply Exiting Inventory</Button>
-                  <Button type="button" variant={inventoryType === "new" ? "default" : "outline"} className="rounded-none w-full" onClick={() => setInventoryType("new")}>Create New Inventory</Button>
+                  <Button
+                    type="button"
+                    variant={inventoryType === "ex" ? "default" : "outline"}
+                    className="rounded-none w-full"
+                    onClick={() => setInventoryType("ex")}
+                  >
+                    Apply Exiting Inventory
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={inventoryType === "new" ? "default" : "outline"}
+                    className="rounded-none w-full"
+                    onClick={() => setInventoryType("new")}
+                  >
+                    Create New Inventory
+                  </Button>
                 </div>
                 <div className="flex flex-wrap space-x-2">
                   {inventoryType === "ex" && (
-                    <ExistingInventoryTable 
+                    <ExistingInventoryTable
                       onSelectInventory={(inventoryId) => {
                         setValue("inventoryId", inventoryId);
                       }}
@@ -430,13 +443,19 @@ export const ProductCreationForm: React.FC = () => {
                   )}
                   {inventoryType === "new" && (
                     <div className="space-y-4 w-full lg:w-1/2 border rounded-lg p-4">
-                      <h1 className="text-sm font-bold">Create New Inventory</h1>
+                      <h1 className="text-sm font-bold">
+                        Create New Inventory
+                      </h1>
                       <div>
-                        <Label htmlFor="minimumStockLevel">Minimum Stock Level</Label>
+                        <Label htmlFor="minimumStockLevel">
+                          Minimum Stock Level
+                        </Label>
                         <Input
                           type="number"
                           id="minimumStockLevel"
-                          {...register("minimumStockLevel", { valueAsNumber: true })}
+                          {...register("minimumStockLevel", {
+                            valueAsNumber: true,
+                          })}
                         />
                         {errors.minimumStockLevel && (
                           <p className="text-sm text-red-500">
@@ -445,11 +464,15 @@ export const ProductCreationForm: React.FC = () => {
                         )}
                       </div>
                       <div>
-                        <Label htmlFor="currentStockLevel">Current Stock Level</Label>
+                        <Label htmlFor="currentStockLevel">
+                          Current Stock Level
+                        </Label>
                         <Input
                           type="number"
                           id="currentStockLevel"
-                          {...register("currentStockLevel", { valueAsNumber: true })}
+                          {...register("currentStockLevel", {
+                            valueAsNumber: true,
+                          })}
                         />
                         {errors.currentStockLevel && (
                           <p className="text-sm text-red-500">
@@ -458,7 +481,9 @@ export const ProductCreationForm: React.FC = () => {
                         )}
                       </div>
                       <div>
-                        <Label htmlFor="measurementUnit">Measurement Unit</Label>
+                        <Label htmlFor="measurementUnit">
+                          Measurement Unit
+                        </Label>
                         <Controller
                           name="measurementUnit"
                           control={control}
@@ -471,9 +496,15 @@ export const ProductCreationForm: React.FC = () => {
                                 <SelectValue placeholder="Select a unit" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="kg">Kilogram (kg)</SelectItem>
-                                <SelectItem value="ml">Milliliter (ml)</SelectItem>
-                                <SelectItem value="pcs">Pieces (pcs)</SelectItem>
+                                <SelectItem value="kg">
+                                  Kilogram (kg)
+                                </SelectItem>
+                                <SelectItem value="ml">
+                                  Milliliter (ml)
+                                </SelectItem>
+                                <SelectItem value="pcs">
+                                  Pieces (pcs)
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           )}

@@ -1,6 +1,5 @@
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "@/keys";
+import { clearAuthState } from "@/features/auth/authSlice";
 import { baseApiSlice } from "../baseApi";
-import { setAuthState } from "@/features/auth/authSlice";
 
 export const authApi = baseApiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,23 +9,50 @@ export const authApi = baseApiSlice.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    }),
+    sendForgotPasswordEmailToRestaurant: builder.mutation({
+      query: (email) => ({
+        url: "/restaurant/forgot-password",
+        method: "POST",
+        body: email,
+      }),
+    }),
+    loginUser: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/user/login",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+    logoutRestaurant: builder.mutation({
+      query: () => ({
+        url: "/auth/restaurant/logout",
+        method: "POST",
+      }),
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
-
-          if (data?.data) {
-            const { accessToken, refreshToken } = data?.data?.tokens;
-            localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-            localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-            dispatch(
-              setAuthState({
-                user: data?.data,
-                restaurantInfo: data?.data,
-              })
-            );
+          if (data) {
+            dispatch(clearAuthState());
           }
         } catch (err) {
-          console.error("Login failed:", err);
+          console.error("Logout failed:", err);
+        }
+      },
+    }),
+    logoutUser: builder.mutation({
+      query: () => ({
+        url: "/auth/user/logout",
+        method: "POST",
+      }),
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          if (data) {
+            dispatch(clearAuthState());
+          }
+        } catch (err) {
+          console.error("Logout failed:", err);
         }
       },
     }),
@@ -34,4 +60,10 @@ export const authApi = baseApiSlice.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useAdminLoginMutation } = authApi;
+export const {
+  useAdminLoginMutation,
+  useSendForgotPasswordEmailToRestaurantMutation,
+  useLoginUserMutation,
+  useLogoutRestaurantMutation,
+  useLogoutUserMutation,
+} = authApi;

@@ -313,14 +313,13 @@ export default function ProductTable() {
                     )}
                   </TableCell>
 
-
-                  <TableCell className="text-center">{product?.isInventoryManagementEnabled ?
-                    <Check className="h-4 w-4 text-green-600 text-center" />
-                    :
-
-                    <X className="h-4 w-4 text-center text-red-600" />
-
-                  }</TableCell>
+                  <TableCell className="text-center">
+                    {product?.isInventoryManagementEnabled ? (
+                      <Check className="h-4 w-4 text-green-600 text-center" />
+                    ) : (
+                      <X className="h-4 w-4 text-center text-red-600" />
+                    )}
+                  </TableCell>
                   <TableCell>
                     {format(new Date(product?.createdAt), "MMM dd, yyyy")}
                   </TableCell>
@@ -369,14 +368,14 @@ export default function ProductTable() {
           )}
           {productData?.data?.meta?.currentPage <
             productData?.data?.meta?.totalPages && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setPage(page + 1)}
-              >
-                Next
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPage(page + 1)}
+            >
+              Next
+            </Button>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <Select value={limit} onValueChange={setLimit}>

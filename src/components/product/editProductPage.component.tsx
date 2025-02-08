@@ -26,8 +26,6 @@ import { useEffect, useState } from "react";
 import { productSchema } from "@/schema/productCreateSchema";
 import ImageUploader from "./imageUploader.component";
 
-
-
 type ProductFormValues = z.infer<typeof productSchema>;
 
 const EditproductComponent = ({ id }: { id: number }) => {
@@ -158,7 +156,7 @@ const EditproductComponent = ({ id }: { id: number }) => {
                 file={image}
                 setFile={setImage}
               />
-              <form onSubmit={() => { }} className="space-y-6">
+              <form onSubmit={() => {}} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="name">Product Name</Label>
                   <Input id="name" {...register("name")} />
@@ -457,12 +455,8 @@ const EditproductComponent = ({ id }: { id: number }) => {
                   //   </div>
                   // </div>
                   <div className="flex flex-wrap">
-                    <div>
-
-                    </div>
-                    <div>
-
-                    </div>
+                    <div></div>
+                    <div></div>
                   </div>
                 )}
 

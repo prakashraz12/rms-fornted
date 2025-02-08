@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import logo from "./assets/icons/logo.png";
 import noImage from "./assets/icons/no-image.png";
+import plate from "./assets/icons/plate.png";
 import mp3 from "./assets/sound/bell.mp3";
 import { Banknote, CreditCard, Landmark, FileCheck } from "lucide-react";
 
@@ -79,7 +80,6 @@ export const MENU_ITEMS: MenuCategory[] = [
         icon: Archive,
         label: "Inventory",
         link: "/inventory",
-
       },
       {
         icon: ShoppingCart,
@@ -149,7 +149,7 @@ export const COMPANY_NAME = "ForkFlow";
 export const NO_IMAGE = noImage;
 
 export const BELL_SOUND = mp3;
-
+export const PLATE_IMAGE = plate;
 //user types
 export const USER_TYPES = [
   "ADMIN",
