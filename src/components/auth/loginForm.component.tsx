@@ -153,13 +153,18 @@ export default function LoginPage() {
     }
 
     if (isSuccessOnUserLogin) {
-      if (userLoginResponse && userLoginResponse?.data && userLoginResponse?.data?.user?.role !== Role.WAITER) {
+      if (
+        userLoginResponse &&
+        userLoginResponse?.data &&
+        userLoginResponse?.data?.user?.role !== Role.WAITER
+      ) {
         dispatch(
           setUserInfo({
             id: userLoginResponse?.data?.user?.id || "",
             name: userLoginResponse?.data?.user?.name || "",
             email: userLoginResponse?.data?.user?.email || "",
-            restaurantCode: userLoginResponse?.data?.restaurant?.restaurantCode || "",
+            restaurantCode:
+              userLoginResponse?.data?.restaurant?.restaurantCode || "",
           })
         );
         dispatch(
@@ -187,10 +192,8 @@ export default function LoginPage() {
         if (userLoginResponse?.data?.user?.role === Role.POS_USER) {
           window.location.href = "/pos";
         }
-      }else{
-
+      } else {
         setIsWaiterTryToLogin(true);
-
       }
     }
   }, [isSuccessOnAdminLogin, isSuccessOnUserLogin]);
@@ -396,7 +399,7 @@ export default function LoginPage() {
                   "Login"
                 )}
               </Button>
-              
+
               <p
                 className="text-sm mt-4 cursor-pointer text-center"
                 onClick={handleNotYou}

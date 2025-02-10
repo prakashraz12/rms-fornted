@@ -37,11 +37,11 @@ import useGetCategory from "../category/hooks/useGetCategory";
 import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "../ui/date-range-picker";
+import { DeleteProductDialog } from "./deleteProductDialog.component";
 
 export default function ProductTable() {
   const naviagte = useNavigate();
   const { category } = useGetCategory();
-
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [productType, setProductType] = React.useState<string>("");
   const [selectedCategory, setSelectedCategory] = React.useState<string>("all");
@@ -345,7 +345,10 @@ export default function ProductTable() {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-destructive">
-                          Delete Product
+                          <DeleteProductDialog
+                            productName={product.name}
+                            productId={product.id}
+                          />
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

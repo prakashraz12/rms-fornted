@@ -18,7 +18,6 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({
   value,
   previousValue,
   currency = "$",
-  progressColor = "bg-green-500",
 }) => {
   const [currentValue, setCurrentValue] = useState(0);
   const [progress, setProgress] = useState(0);

@@ -26,7 +26,7 @@ interface Table {
 }
 
 export function FloorTableLayout() {
-  const { floorData, isFloorFetched, isFloorFetching } = useGetTables();
+  const { floorData } = useGetTables();
 
   const [createFloor] = useCreateFloorMutation();
   const [seletedFloor, setSelectedFloor] = useState<any>();
@@ -89,7 +89,7 @@ export function FloorTableLayout() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-20 p-4">
-        {seletedFloor?.tables?.map((table) => (
+        {seletedFloor?.tables?.map((table: any) => (
           <DropdownMenu key={table.id}>
             <DropdownMenuTrigger className="bg-transparent outline-none border-none cursor-pointer focus-within:bg-transparent focus-within:border-none focus-within:outline-none">
               {table.tableType === "S" ? (

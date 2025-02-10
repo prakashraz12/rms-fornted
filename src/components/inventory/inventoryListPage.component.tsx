@@ -1,15 +1,5 @@
 import * as React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import {
-  Package,
-  Plus,
-  FileOutput,
-  FileText,
-  Loader2,
-  Search,
-} from "lucide-react";
+import { Plus, FileOutput, Loader2, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -22,7 +12,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import AddInventoryDialog from "./inventoryAddForm";
 import { useLazyGetInventoryListQuery } from "@/services/api/inventoryApi";
 import { Input } from "../ui/input";
 import { DatePickerWithRange } from "../ui/date-range-picker";
@@ -33,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { exportSelectedRowsToCSV, exportSelectedRowsToPDF } from "@/lib/utils";
+import { exportSelectedRowsToCSV } from "@/lib/utils";
 import { Checkbox } from "../ui/checkbox";
 import { Skeleton } from "../ui/skeleton";
 import { Badge } from "../ui/badge";
@@ -41,19 +30,7 @@ import { format } from "date-fns";
 import { InventoryItems } from "@/types/inventory.type";
 import { DateRange } from "react-day-picker";
 
-const inventorySchema = z.object({
-  name: z.string().min(2, "Inventory name must be at least 2 characters"),
-  currentStock: z
-    .number()
-    .min(0, "Current stock must be a non-negative number"),
-  minimumStock: z
-    .number()
-    .min(0, "Minimum stock must be a non-negative number"),
-  skuId: z.string().min(1, "SKU code is required"),
-  unitPrice: z.number().min(0, "Unit price must be a non-negative number"),
-});
-
-type FormValues = z.infer<typeof inventorySchema>;
+// type FormValues = z.infer<typeof inventorySchema>;
 
 export default function InventoryManagement() {
   const [isAddInventoryDialogOpen, setIsAddInventoryDialogOpen] =
@@ -99,17 +76,6 @@ export default function InventoryManagement() {
     getInventoryList();
   }, [page, limit]);
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(inventorySchema),
-    defaultValues: {
-      name: "",
-      currentStock: 0,
-      minimumStock: 0,
-      skuId: "",
-      unitPrice: 0,
-    },
-  });
-
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
       setSelectedItems(
@@ -140,6 +106,7 @@ export default function InventoryManagement() {
     setSelectedItems([]);
   };
 
+  console.log(isAddInventoryDialogOpen);
   return (
     <div className="container mx-auto  mt-6 w-full h-full">
       <div className="flex justify-between items-center">

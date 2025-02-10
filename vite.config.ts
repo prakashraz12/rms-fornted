@@ -15,6 +15,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["**/**"],
       workbox: {
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // Increase to 4 MiB
         globPatterns: ["**/*.{js,css,html,ico,png,svg,json,woff2}"],
 
         runtimeCaching: [

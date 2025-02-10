@@ -18,10 +18,6 @@ export function KOTLayout({
   createdAt,
   remarks,
 }: KOTLayoutProps) {
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
     <div className=" p-4 max-w-[80mm] mx-auto text-[12px] leading-tight">
       <div className="text-center mb-4 border-b-2 border-black pb-2">

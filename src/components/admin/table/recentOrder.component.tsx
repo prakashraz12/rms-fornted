@@ -4,37 +4,8 @@ import useGetOrders from "@/hooks/useGetOrders";
 import { OrderType } from "@/enums/orderType.enum";
 import { HandPlatter, PackageOpen } from "lucide-react";
 
-interface Order {
-  tableNumber: number;
-  items: number;
-  total: number;
-  status: "pending" | "completed";
-}
-
 export default function RecentOrders() {
   const { orders } = useGetOrders();
-
-  const getStatusStyles = (status: Order["status"]) => {
-    switch (status) {
-      case "pending":
-        return "bg-emerald-50 text-emerald-700 hover:bg-emerald-50";
-      case "completed":
-        return "bg-yellow-50 text-yellow-700 hover:bg-yellow-50";
-      default:
-        return "";
-    }
-  };
-
-  const getStatusLabel = (status: Order["status"]) => {
-    switch (status) {
-      case "pending":
-        return "pending";
-      case "completed":
-        return "Completed";
-      default:
-        return status;
-    }
-  };
 
   return (
     <Card>
@@ -67,12 +38,7 @@ export default function RecentOrders() {
                 </p>
               </div>
             </div>
-            <Badge
-              variant="secondary"
-              className={getStatusStyles(order.status)}
-            >
-              {getStatusLabel(order.status)}
-            </Badge>
+            <Badge variant="secondary">{order?.status}</Badge>
           </div>
         ))}
       </CardContent>

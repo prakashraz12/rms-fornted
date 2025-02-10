@@ -58,6 +58,12 @@ export const productApi = baseApiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `/product/delete/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -66,4 +72,5 @@ export const {
   useLazyGetProductByRestaurantIdQuery,
   useGetProductByIdQuery,
   useUpdateProductMutation,
+  useDeleteProductMutation,
 } = productApi;

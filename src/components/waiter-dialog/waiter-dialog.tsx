@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,13 +6,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { AlertCircle } from 'lucide-react'
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { AlertCircle } from "lucide-react";
 
 interface WaiterLoginDialogProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 const WaiterLoginDialog: React.FC<WaiterLoginDialogProps> = ({
@@ -21,8 +21,11 @@ const WaiterLoginDialog: React.FC<WaiterLoginDialogProps> = ({
 }) => {
   const handlePlayStoreRedirect = () => {
     // Replace this URL with your actual Play Store app link
-    window.open('https://play.google.com/store/apps/details?id=your.app.id', '_blank')
-  }
+    window.open(
+      "https://play.google.com/store/apps/details?id=your.app.id",
+      "_blank"
+    );
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -33,10 +36,11 @@ const WaiterLoginDialog: React.FC<WaiterLoginDialogProps> = ({
             Waiter Access Restricted
           </DialogTitle>
           <DialogDescription>
-            Waiters cannot log in through this portal. Please download our mobile app to access your account.
+            Waiters cannot log in through this portal. Please download our
+            mobile app to access your account.
           </DialogDescription>
         </DialogHeader>
-       
+
         <DialogFooter className="sm:justify-start">
           <Button type="button" variant="secondary" onClick={onClose}>
             Close
@@ -47,7 +51,7 @@ const WaiterLoginDialog: React.FC<WaiterLoginDialogProps> = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default WaiterLoginDialog
+export default WaiterLoginDialog;

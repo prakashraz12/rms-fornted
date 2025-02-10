@@ -64,7 +64,7 @@ const ProductContainer = ({
       setIsLogoutConfirmationOpen(true);
       window.location.href = "/restaurant/portal/login";
     }
-   }, [isLogoutRestaurantSuccess, isLogoutUserSuccess]);
+  }, [isLogoutRestaurantSuccess, isLogoutUserSuccess]);
   return (
     <div className="w-full lg:mt-3 md:mt-2  lg:px-4 md:px-2">
       <div className="flex items-center space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4 gap-2 w-full">

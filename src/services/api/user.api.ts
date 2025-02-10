@@ -22,4 +22,8 @@ const userApi = baseApiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetUserQuery, useUpdateProfileMutation, useChangePasswordMutation } = userApi;
+export const {
+  useGetUserQuery,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
+} = userApi;

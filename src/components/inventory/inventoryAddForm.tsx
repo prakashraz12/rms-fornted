@@ -15,18 +15,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import useGetSKU from "@/hooks/useGetSKU";
-import { useState } from "react";
 
 interface AddInventoryDialogProps {
   isDialogOpen: boolean;
@@ -40,8 +31,6 @@ const AddInventoryDialog = ({
   form,
   onSubmit,
 }: AddInventoryDialogProps) => {
-  const { sku } = useGetSKU();
-  const [measurement, setMeasurement] = useState("");
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
@@ -72,34 +61,7 @@ const AddInventoryDialog = ({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="skuId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>SKU Code</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select SKU" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {sku?.map((sku) => (
-                          <SelectItem key={sku.id} value={sku.id?.toString()}>
-                            {sku.skuCode}-{sku.category}-{sku.measuringUnit}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
             <FormField
               control={form.control}
               name="unitPrice"

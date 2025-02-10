@@ -29,6 +29,7 @@ interface RestaurantProfile {
 const RestaurantProfile: React.FC<{ profile: RestaurantProfile }> = ({
   profile,
 }) => {
+
   return (
     <div className="container mx-auto p-6 space-y-6">
       <Card className="w-full">

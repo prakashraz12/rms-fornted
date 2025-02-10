@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Edit2, Lock } from "lucide-react";
+import { Edit2 } from "lucide-react";
 import { useGetUserQuery } from "@/services/api/user.api";
 import { Role } from "@/enums/role.enums";
 
@@ -28,7 +28,7 @@ interface User {
 }
 
 export default function UserTable() {
-  const { data, isLoading, isError, error } = useGetUserQuery({
+  const { data } = useGetUserQuery({
     refetchOnMountOrArgChange: true,
   });
 

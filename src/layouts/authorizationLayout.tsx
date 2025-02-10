@@ -27,25 +27,25 @@ const AuthorizationLayout = ({
     });
 
     if (!isAuthenticated) {
-      console.log("Not authenticated, redirecting to login");
       navigate("/restaurant/portal/login", { replace: true });
       return;
     }
 
     if (!role) {
-      console.log("No role found, redirecting to login");
       navigate("/restaurant/portal/login", { replace: true });
       return;
     }
 
     if (!requiredRoles.includes(role)) {
-      console.log("Role not in required roles, redirecting to unauthorized");
+      if (role === Role.POS_USER) {
+        navigate("/pos", { replace: true });
+        return;
+      }
       navigate("/unauthorized", { replace: true });
     }
   }, [isAuthenticated, role, requiredRoles, navigate]);
 
   if (!isAuthenticated || !role || !requiredRoles.includes(role)) {
-    console.log("Rendering null due to authentication/role check");
     return null;
   }
 

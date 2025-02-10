@@ -21,7 +21,7 @@ const ExistingInventoryTable: React.FC<ExistingInventoryTableProps> = ({
   onSelectInventory,
 }) => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const limit = 10;
   const [search, setSearch] = useState("");
   const { inventory } = useGetInventory({ page, limit, search });
   const [selectedInventoryId, setSelectedInventoryId] = useState<string | null>(

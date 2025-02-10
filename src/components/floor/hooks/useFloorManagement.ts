@@ -46,7 +46,7 @@ export const useFloorManagement = () => {
     );
   };
 
-  const bookTable = (tableId: string, bookingName: string) => {
+  const bookTable = (tableId: string) => {
     updateTableStatus(tableId, "reserved");
     // Add API call here to update backend
   };

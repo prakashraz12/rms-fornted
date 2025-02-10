@@ -1,7 +1,6 @@
-import RestaurantProfile from "@/components/restaurant/profile.component";
 
 const RestaurantProfilePage = () => {
-  return <RestaurantProfile />;
+  return <></>
 };
 
 export default RestaurantProfilePage;

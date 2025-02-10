@@ -1,7 +1,4 @@
-import {
-  useGetProductByIdQuery,
-  useUpdateProductMutation,
-} from "@/services/api/product.api";
+import { useGetProductByIdQuery } from "@/services/api/product.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import useGetCategory from "../category/hooks/useGetCategory";
@@ -21,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { ComboProductList } from "./comboProductShowCase.component";
+// import { ComboProductList } from "./comboProductShowCase.component";
 import { useEffect, useState } from "react";
 import { productSchema } from "@/schema/productCreateSchema";
 import ImageUploader from "./imageUploader.component";
@@ -32,7 +29,7 @@ const EditproductComponent = ({ id }: { id: number }) => {
   const [image, setImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const { data, isLoading } = useGetProductByIdQuery(id);
-  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+  // const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
   const { category } = useGetCategory();
   // const {
@@ -44,10 +41,10 @@ const EditproductComponent = ({ id }: { id: number }) => {
   //   setImage,
   // } = useProductForm();
 
+  console.log(image);
   const {
     register,
     control,
-    handleSubmit,
     watch,
     setValue,
     formState: { errors },
@@ -153,8 +150,8 @@ const EditproductComponent = ({ id }: { id: number }) => {
               <ImageUploader
                 previewImage={previewImage}
                 setPreviewImage={setPreviewImage}
-                file={image}
                 setFile={setImage}
+                file={image}
               />
               <form onSubmit={() => {}} className="space-y-6">
                 <div className="space-y-2">
@@ -460,9 +457,9 @@ const EditproductComponent = ({ id }: { id: number }) => {
                   </div>
                 )}
 
-                <Button type="submit" disabled={isUpdating}>
+                {/* <Button type="submit" disabled={isUpdating}>
                   {isUpdating ? "Updating..." : "Update Product"}
-                </Button>
+                </Button> */}
               </form>
             </>
           )}

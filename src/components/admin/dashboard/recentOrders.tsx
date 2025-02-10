@@ -27,7 +27,7 @@ import useGetOrders from "@/hooks/useGetOrders";
 import { format } from "date-fns";
 
 const RecentOrders = () => {
-  const { orders } = useGetOrders(5);
+  const { orders } = useGetOrders();
   return (
     <motion.div
       className="lg:col-span-2 "

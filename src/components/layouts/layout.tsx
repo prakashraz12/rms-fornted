@@ -7,14 +7,10 @@ import { cn } from "@/lib/utils";
 export const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const handleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background w-full overflow-hidden">
       <div className="flex">
-        <SidebarLayout collapsed={collapsed} setCollapsed={setCollapsed} />
+        <SidebarLayout collapsed={collapsed} />
         <div
           className={cn(
             "flex-1 min-h-screen flex flex-col",
@@ -22,7 +18,7 @@ export const MainLayout = () => {
           )}
         >
           <HeaderLayout collapsed={collapsed} setCollapsed={setCollapsed} />
-          <main className="flex-1 p-6">
+          <main className="flex-1 p-6 overflow-y-scroll">
             <Outlet />
           </main>
         </div>

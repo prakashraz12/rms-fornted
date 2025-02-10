@@ -64,7 +64,7 @@ export default function PosHeader({
           <Fullscreen className="h-5 w-5 text-purple-600" />
         </Button>
         <Button
-        onClick={() => setIsProfileOpen(true)}
+          onClick={() => setIsProfileOpen(true)}
           variant="ghost"
           size="icon"
           className="h-10 w-10 bg-blue-100 hover:bg-blue-200"
@@ -83,7 +83,11 @@ export default function PosHeader({
           setOpen={setOrderDailogOpen}
         />
       </div>
-      <ProfileDialog isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} initialData={{ name: userName, email, avatarUrl:"" }} />
+      <ProfileDialog
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        initialData={{ name: userName, email, avatarUrl: "" }}
+      />
     </div>
   );
 }

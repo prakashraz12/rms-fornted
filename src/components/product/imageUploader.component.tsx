@@ -9,10 +9,10 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 const ImageUploader: React.FC<{
   previewImage: string | null;
-  setPreviewImage: React.Dispatch<React.SetStateAction<string | null>>;
   file: File | null;
+  setPreviewImage: React.Dispatch<React.SetStateAction<string | null>>;
   setFile: React.Dispatch<React.SetStateAction<File | null>>;
-}> = ({ previewImage, setPreviewImage, file, setFile }) => {
+}> = ({ previewImage, setPreviewImage, setFile }) => {
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
